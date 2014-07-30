@@ -9,82 +9,21 @@ import java.util.ArrayList;
 
 public class Tafl extends JFrame{
 	public static final long serialVersionUID = 1L;
-	private Font myFont;
-	// private BufferedImage img, ground1, pow1, lifeNut, glass, bin;
-	// Image squirrelImg;
-	// boolean hit=false;
 	boolean selected=false, whiteTurn=true;
 	int posX=0, posY=0;
 	int selX, selY;
 	int mX=0,mY=0;
 	boolean mouseIsDown,up,down,left,right,space,showPow, gameOver=false;
-	// int powTimer=0;
-	// double angle, enemyAngle;
 	int sizeX=800, sizeY=800;
 	int gridSpace=(sizeY-100)/9;
 	int pieceRad = gridSpace/2;
 	int pieceSpace=pieceRad/2;
 	char board[][] = new char[9][9];
-	// int posX=0, bgPosX=0;
-	// float velX=0;
-	// int tick=0;
-	// int bgWidth;
-	// ArrayList<Obsticle> obsticles = new ArrayList<Obsticle>();
-	// int last;
-	// int life = 5;
-
-	// public String smallNutFile="life.png",bgImage = "forest1.jpg", groundFile="ground1.png",
-	// 	powFile="pow.png",glassFile="glass.png", binFile="bin.png";
-	// Squirrel me = new Squirrel();
-
-	// Timer timer = new Timer(1000/100,new ActionListener() {
-	// 	public void actionPerformed(ActionEvent event) 
-	// 	{
-	// 		update();
-	// 		repaint();
-	// 	}
-	// });
-
-
-	public void update(){
-	}
-
 	public Tafl(){
 
-		// try{
-		// 	myFont=Font.createFont(Font.TRUETYPE_FONT, new File("Son_of_Stone.ttf"));
-		// } catch (IOException|FontFormatException e) {
-		// 	myFont=new Font("Ariel", Font.TRUETYPE_FONT, 20); 
-		// }
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-		//ge.registerFont(myFont);
 
 		setResizable( false );
-
-		// ImageIcon ii = new ImageIcon("run.gif");
-   		// squirrelImg = ii.getImage();
-
-		// try {
-  //           img = ImageIO.read(new File(bgImage));
-  //           int w = img.getWidth(null);
-  //           int h = img.getHeight(null);
-  //           bgWidth=img.getWidth();
-  //       } catch (IOException e) {System.out.println("Image could not be read");}
-  //       try {
-  //           ground1 = ImageIO.read(new File(groundFile));
-  //       } catch (IOException e) {System.out.println("Image could not be read");}
-  //       try {
-  //           bin = ImageIO.read(new File(binFile));
-  //       } catch (IOException e) {System.out.println("Image could not be read");}
-  //       try {
-  //           glass = ImageIO.read(new File(glassFile));
-  //       } catch (IOException e) {System.out.println("Image could not be read");}
-  //       try {
-  //           lifeNut = ImageIO.read(new File(smallNutFile));
-  //       } catch (IOException e) {System.out.println("Image could not be read");}
-  //       try {
-  //           pow1 = ImageIO.read(new File(powFile));
-  //       } catch (IOException e) {System.out.println("Image could not be read");}
 
 		for (int i=0; i<9; i++) {
 			for (int j=0; j<9; j++) {
@@ -155,11 +94,6 @@ public class Tafl extends JFrame{
 			}
 		};
 
-		// setCursor(this.getToolkit().createCustomCursor(
-  //           new BufferedImage(3, 3, BufferedImage.TYPE_INT_ARGB), new Point(0, 0),
-  //           "null"
-  //       ));
-
 		addKeyListener(new KeyListener(){ //NOT THIS BUT FRAME
 			public void keyPressed(KeyEvent e){
 				if(e.getKeyCode()==87){
@@ -214,7 +148,6 @@ public class Tafl extends JFrame{
 							}else if(posY==selY){
 								safe=checkPath(posX,selX,true);
 							}
-							if((board[selX][selY]=='w'||board[selX][selY]=='b')&&(posX=))
 							if(safe){
 								if(board[selX][selY]=='w'){
 									board[posX][posY]='w';
@@ -253,7 +186,6 @@ public class Tafl extends JFrame{
 		repaint();
 		setVisible(true);
 		setDefaultCloseOperation(EXIT_ON_CLOSE); //exit application when x is clicked
-		// timer.start();
 	}
 	public boolean checkPath(int pos, int sel, boolean x){
 		for (int i=(pos<sel?pos:sel)+1; i<(pos<sel?sel:pos); i++) {
