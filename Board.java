@@ -117,4 +117,14 @@ class Board {
 		}
 		return true;
 	}
+	public boolean checkWin(){
+		for (int i=0; i<width; i++) {
+			for (int j=0; j<height; j++) {
+				if(get(i,j)=='k'){
+					return(isKingSpace(i,j));
+				}
+			}
+		}
+		return false;
+	}
 }
