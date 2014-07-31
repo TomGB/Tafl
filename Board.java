@@ -83,17 +83,20 @@ class Board {
 	public boolean isKingSpace(int x, int y){
 		return ((x==0&&y==0)||(x==0&&y==height-1)||(x==width-1&&y==0)||(x==width-1&&y==height-1)||(x==width/2&&y==height/2));
 	}
+	public boolean isEnemyKingSpace(int x, int y){
+		return ((x==0&&y==0)||(x==0&&y==height-1)||(x==width-1&&y==0)||(x==width-1&&y==height-1)||(x==width/2&&y==height/2&&!(get(x,y)=='k')));
+	}
 	public void takePieces(int x, int y, char piece){
-		if(y<width-2&&isEnemyPawn(x, y+1, piece)&&isFriend(x, y+2, piece)){
+		if(y<width-2&&isEnemyPawn(x, y+1, piece)&&(isFriend(x, y+2, piece)||isEnemyKingSpace(x,y+2))){
 			set(x, y+1, 'e');
 		}
-		if(x<width-2&&isEnemyPawn(x+1, y, piece)&&isFriend(x+2, y, piece)){
+		if(x<width-2&&isEnemyPawn(x+1, y, piece)&&(isFriend(x+2, y, piece)||isEnemyKingSpace(x+2,y))){
 			set(x+1, y, 'e');
 		}
-		if(y>1&&isEnemyPawn(x, y-1, piece)&&isFriend(x, y-2, piece)){
+		if(y>1&&isEnemyPawn(x, y-1, piece)&&(isFriend(x, y-2, piece)||isEnemyKingSpace(x,y-2))){
 			set(x, y-1, 'e');
 		}
-		if(x>1&&isEnemyPawn(x-1, y, piece)&&isFriend(x-2, y, piece)){
+		if(x>1&&isEnemyPawn(x-1, y, piece)&&(isFriend(x-2, y, piece)||isEnemyKingSpace(x-2,y))){
 			set(x-1, y, 'e');
 		}
 	}
@@ -121,6 +124,9 @@ class Board {
 		for (int i=0; i<width; i++) {
 			for (int j=0; j<height; j++) {
 				if(get(i,j)=='k'){
+					if(i==width/2&&j==height/2){
+						return false;
+					}
 					return(isKingSpace(i,j));
 				}
 			}
