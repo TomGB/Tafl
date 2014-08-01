@@ -101,7 +101,7 @@ class Board {
 		}
 	}
 	public boolean isEnemyPawn(int x, int y, char piece){
-		return ((get(x,y)=='b'&&piece=='w'||piece=='k'))||(get(x,y)=='w'&&piece=='b');
+		return ((get(x,y)=='b'&&(piece=='w'||piece=='k')))||(get(x,y)=='w'&&piece=='b');
 	}
 	public boolean isFriend(int x, int y, char piece){
 		return ((get(x,y)=='b'&&piece=='b')||((get(x,y)=='w'||get(x,y)=='k')&&(piece=='w'||piece=='k')));
