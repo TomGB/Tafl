@@ -51,11 +51,18 @@ class Board {
 	public void set(int x, int y, char type){
 		pieces[x][y]=type;
 	}
-	public boolean isPiece(int x, int y){
+	public boolean isBlack(int x, int y){
 		char tempPiece = pieces[x][y];
-		return (tempPiece=='w'||tempPiece=='k'||tempPiece=='b');
+		return (tempPiece=='b');
+	}
+	public boolean isWhite(int x, int y){
+		char tempPiece = pieces[x][y];
+		return (tempPiece=='w'||tempPiece=='k');
 	}
 	public boolean validMove(int x1, int y1, int x2, int y2, char piece){
+		if(get(x2,y2)!='e'){
+			return false;
+		}
 		if(x1==x2){ //piece moved in y axis
 			int low = (y1<y2?y1:y2);
 			int high = (y1>y2?y1:y2);

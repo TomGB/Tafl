@@ -17,6 +17,10 @@ public class UserInteraction extends JFrame{
 	int gridSpace=(sizeY-100)/9;
 	int pieceRad = gridSpace/2;
 	int pieceSpace=pieceRad/2;
+	int selectSpacing=4;
+	int textHeight = 40;
+	int textWidth = 200;
+	Font f = new Font("Dialog", Font.PLAIN, 16);
 
 	public UserInteraction(Tafl _tafl){
 
@@ -31,6 +35,7 @@ public class UserInteraction extends JFrame{
 			public void paint(Graphics g){
 				super.paintComponent(g);
 				Graphics2D g2 = (Graphics2D) g;
+				g.setFont(f);
 				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON); //anti alias to make lines smooth
 				AffineTransform at = g2.getTransform();
 
@@ -56,9 +61,21 @@ public class UserInteraction extends JFrame{
 						}
 					}
 				}
-				if(tafl.selected){
+				if(tafl.blackWin){
+					g.setColor(new Color(255,255,255,200));
+					g.fillRect((sizeX-textWidth)/2,(sizeY-textHeight)/2,textWidth,textHeight);
+					g.setColor(Color.black);
+					g.drawRect((sizeX-textWidth)/2,(sizeY-textHeight)/2,textWidth,textHeight);
+					g.drawString("Black has Won",(sizeX-textWidth)/2+30,(sizeY)/2+6);
+				}else if(tafl.whiteWin){
+					g.setColor(new Color(255,255,255,200));
+					g.fillRect((sizeX-textWidth)/2,(sizeY-textHeight)/2,textWidth,textHeight);
+					g.setColor(Color.black);
+					g.drawRect((sizeX-textWidth)/2,(sizeY-textHeight)/2,textWidth,textHeight);
+					g.drawString("White has Won",(sizeX-textWidth)/2+30,(sizeY)/2+6);
+				}else if(tafl.selected){
 					g.setColor(Color.blue);
-					g.fillOval(50+gridSpace*tafl.selX+pieceSpace+(pieceSpace/2),50+gridSpace*tafl.selY+pieceSpace+(pieceSpace/2),pieceRad/2,pieceRad/2);
+					g.drawRect(50+gridSpace*tafl.selX+selectSpacing,50+gridSpace*tafl.selY+selectSpacing,gridSpace-selectSpacing*2,gridSpace-selectSpacing*2);
 				}
 			}
 		};
