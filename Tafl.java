@@ -56,5 +56,6 @@ class Tafl {
 		myGUI.repaint();
 	}
 	public static void p(Object o){System.out.print(o);}
-	public static void main(String[] args) { new Tafl();}
+	public static int r(int x){return (int)(Math.random()*x);}
+	public static void main(String args[]){new Tafl();}
 }
