@@ -96,12 +96,12 @@ public class UserInteraction extends JFrame{
 					}else{
 						g.drawString("Black's Turn",130+30,30+6);
 					}
+					g.setColor(new Color(255,255,255,200));
+					g.fillRect(70,10,50,textHeight);
+					g.setColor(Color.black);
+					g.drawRect(70,10,50,textHeight);
+					g.drawImage(undoimg,74,12, null);
 				}
-				g.setColor(new Color(255,255,255,200));
-				g.fillRect(70,10,50,textHeight);
-				g.setColor(Color.black);
-				g.drawRect(70,10,50,textHeight);
-				g.drawImage(undoimg,74,12, null);
 			}
 		};
 
@@ -142,13 +142,14 @@ public class UserInteraction extends JFrame{
 			}
 			public void mouseReleased(MouseEvent e) {
 				mouseIsDown=false;
-				int tempX=(mX-50)/gridSpace;
-				int tempY=(mY-50)/gridSpace;
-				if(tempX<=8 && tempX>=0 && tempY<=8 && tempY>=0){
-					tafl.update(e.getButton(),tempX,tempY);
-				}else if(mX>70&&mX<120&&mY>10&&mY<90){
+				float tempX=((float)(mX-50)/gridSpace);
+				float tempY=((float)(mY-50)/gridSpace);
+				if(tempX<9 && tempX>=0 && tempY<9 && tempY>=0){
+					p("update call");
+					tafl.update(e.getButton(),(int)tempX,(int)tempY);
+				}else if(mX>70 && mX<120 && mY>10 && mY<90){
 					p("undo clicked");
-					tafl.board.loadHistory();
+					tafl.undo();
 				}
 			}
 			public void mouseEntered(MouseEvent e) {}
@@ -177,6 +178,6 @@ public class UserInteraction extends JFrame{
 		setDefaultCloseOperation(EXIT_ON_CLOSE); //exit application when x is clicked
 	}
 
-	public static void p(Object o){System.out.print(o);}
+	public static void p(Object o){System.out.println(o);}
 	public static int r(int x){return (int)(Math.random()*x);}
 }

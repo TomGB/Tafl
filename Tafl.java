@@ -31,6 +31,7 @@ class Tafl {
 			}else if(selected){
 				char original = board.get(selX,selY);
 				if(board.validMove(selX, selY, posX, posY, original)){ //move piece
+					board.turnNum++;
 					board.saveHistory();
 					whiteTurn = !whiteTurn;
 					board.set(posX,posY,original);
@@ -55,7 +56,15 @@ class Tafl {
 		}
 		myGUI.repaint();
 	}
-	public static void p(Object o){System.out.print(o);}
+
+	public void undo(){
+		if(board.turnNum>0){
+			whiteTurn = !whiteTurn;
+			board.loadHistory();
+			myGUI.repaint();
+		}
+	}
+	public static void p(Object o){System.out.println(o);}
 	public static int r(int x){return (int)(Math.random()*x);}
 	public static void main(String args[]){new Tafl();}
 }

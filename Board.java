@@ -2,8 +2,9 @@ import java.util.ArrayList;
 class Board {
 	char pieces[][];
 	int width, height;
+	int turnNum;
 
-	ArrayList<char[][]> history = new ArrayList<char[][]>();
+	ArrayList<String> history;;
 
 	public Board(int _width, int _height){
 		width = _width;
@@ -18,6 +19,8 @@ class Board {
 		}
 	}
 	public void setUp(){
+		history = new ArrayList<String>();
+		turnNum=0;
 		pieces[4][4]='k';
 		pieces[4][2]='w';
 		pieces[3][4]='w';
@@ -144,9 +147,24 @@ class Board {
 		return false;
 	}
 	public void saveHistory(){
-		history.add(pieces);
+		String temp = "";
+		for (int i=0; i<width; i++) {
+			for (int j=0; j<height; j++) {
+				temp+=pieces[i][j];
+			}
+		}
+		history.add(temp);
 	}
 	public void loadHistory(){
-		pieces=history.get(history.size()-1);
+		String temp = history.remove(--turnNum);
+		for (int i=0; i<width; i++) {
+			for (int j=0; j<height; j++) {
+				pieces[i][j]=temp.charAt(height*i+j);
+			}
+		}
+		p("history loaded");
 	}
+
+	public static void p(Object o){System.out.println(o);}
+
 }
