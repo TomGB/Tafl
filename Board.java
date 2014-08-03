@@ -1,6 +1,9 @@
+import java.util.ArrayList;
 class Board {
 	char pieces[][];
 	int width, height;
+
+	ArrayList<char[][]> history = new ArrayList<char[][]>();
 
 	public Board(int _width, int _height){
 		width = _width;
@@ -139,5 +142,11 @@ class Board {
 			}
 		}
 		return false;
+	}
+	public void saveHistory(){
+		history.add(pieces);
+	}
+	public void loadHistory(){
+		pieces=history.get(history.size()-1);
 	}
 }
