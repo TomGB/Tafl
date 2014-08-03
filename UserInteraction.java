@@ -5,7 +5,6 @@ import java.io.*;
 import javax.imageio.*;
 import java.awt.event.*;
 import java.awt.image.*;
-import java.util.ArrayList;
 
 public class UserInteraction extends JFrame{
 	public static final long serialVersionUID = 1L;
@@ -22,11 +21,21 @@ public class UserInteraction extends JFrame{
 	int textWidth = 200;
 	Font f = new Font("Dialog", Font.PLAIN, 16);
 
+	Image undoimg;
+
 	public UserInteraction(Tafl _tafl){
+
+		setTitle("Tafl");
 
 		tafl = _tafl;
 
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+
+		try{
+			undoimg = ImageIO.read(new File("assets/undo.png"));
+		}catch(IOException e){
+			p("error reading image");
+		}
 
 		setResizable( false );
 
@@ -73,10 +82,26 @@ public class UserInteraction extends JFrame{
 					g.setColor(Color.black);
 					g.drawRect((sizeX-textWidth)/2,(sizeY-textHeight)/2,textWidth,textHeight);
 					g.drawString("White has Won",(sizeX-textWidth)/2+30,(sizeY)/2+6);
-				}else if(tafl.selected){
-					g.setColor(Color.blue);
-					g.drawRect(50+gridSpace*tafl.selX+selectSpacing,50+gridSpace*tafl.selY+selectSpacing,gridSpace-selectSpacing*2,gridSpace-selectSpacing*2);
+				}else{
+					if(tafl.selected){
+						g.setColor(Color.blue);
+						g.drawRect(50+gridSpace*tafl.selX+selectSpacing,50+gridSpace*tafl.selY+selectSpacing,gridSpace-selectSpacing*2,gridSpace-selectSpacing*2);
+					}
+					g.setColor(new Color(255,255,255,200));
+					g.fillRect(130,10,textWidth,textHeight);
+					g.setColor(Color.black);
+					g.drawRect(130,10,textWidth,textHeight);
+					if(tafl.whiteTurn){
+						g.drawString("White's Turn",130+30,30+6);
+					}else{
+						g.drawString("Black's Turn",130+30,30+6);
+					}
 				}
+				g.setColor(new Color(255,255,255,200));
+				g.fillRect(70,10,50,textHeight);
+				g.setColor(Color.black);
+				g.drawRect(70,10,50,textHeight);
+				g.drawImage(undoimg,74,12, null);
 			}
 		};
 
@@ -121,6 +146,9 @@ public class UserInteraction extends JFrame{
 				int tempY=(mY-50)/gridSpace;
 				if(tempX<=8 && tempX>=0 && tempY<=8 && tempY>=0){
 					tafl.update(e.getButton(),tempX,tempY);
+				}else if(mX>70&&mX<120&&mY>10&&mY<90){
+					p("undo clicked");
+					tafl.board.loadHistory();
 				}
 			}
 			public void mouseEntered(MouseEvent e) {}
@@ -131,6 +159,11 @@ public class UserInteraction extends JFrame{
 			public void mouseMoved(MouseEvent e) {
 				mX=e.getX();
 				mY=e.getY();
+				if(mX>70&&mX<120&&mY>10&&mY<90){
+					setCursor(new Cursor(Cursor.HAND_CURSOR));
+				}else{
+					setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+				}
 			}
 			public void mouseDragged(MouseEvent e) {
 				mX=e.getX();

@@ -5,7 +5,6 @@ class Tafl {
 	int boardWidth = 9;
 	int boardHeight = 9;
 	Board board = new Board(boardWidth,boardHeight);
-
 	UserInteraction myGUI;
 
 	public Tafl(){
@@ -32,6 +31,7 @@ class Tafl {
 			}else if(selected){
 				char original = board.get(selX,selY);
 				if(board.validMove(selX, selY, posX, posY, original)){ //move piece
+					board.saveHistory();
 					whiteTurn = !whiteTurn;
 					board.set(posX,posY,original);
 					board.set(selX,selY,'e');
