@@ -147,7 +147,7 @@ public class UserInteraction extends JFrame{
 				if(tempX<9 && tempX>=0 && tempY<9 && tempY>=0){
 					p("update call");
 					tafl.update(e.getButton(),(int)tempX,(int)tempY);
-				}else if(mX>70 && mX<120 && mY>10 && mY<90){
+				}else if(!tafl.whiteWin && !tafl.blackWin && mX>70 && mX<120 && mY>10 && mY<90){
 					p("undo clicked");
 					tafl.undo();
 				}
@@ -160,7 +160,7 @@ public class UserInteraction extends JFrame{
 			public void mouseMoved(MouseEvent e) {
 				mX=e.getX();
 				mY=e.getY();
-				if(mX>70&&mX<120&&mY>10&&mY<90){
+				if(!tafl.whiteWin && !tafl.blackWin&&mX>70&&mX<120&&mY>10&&mY<90){
 					setCursor(new Cursor(Cursor.HAND_CURSOR));
 				}else{
 					setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
