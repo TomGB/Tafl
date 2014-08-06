@@ -94,6 +94,7 @@ public class UserInteraction extends JFrame{
 					for (String line : rulesText.split("\n")){
 	        			g.drawString(line, frameX, frameY += g.getFontMetrics().getHeight());
 					}
+					frameY = 70;
 				}else{
 					if(tafl.selected){
 						g.setColor(Color.blue);
