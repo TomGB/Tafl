@@ -19,7 +19,11 @@ public class UserInteraction extends JFrame{
 	int selectSpacing=4;
 	int textHeight = 40;
 	int textWidth = 200;
+	int frameX = 80;
+	int frameY = 70;
 	Font f = new Font("Dialog", Font.PLAIN, 16);
+
+	String rulesText = "Black is attacking and goes first, white is defending it's King (the pink piece in the\nmiddle). To win black must surround the King on 4 sides or white must reach one\nof the four corners with its King. Pieces may move any distance in a strait line,\nhorisontally or vertically, unless another piece blocks it's path. Only the King may \nsit in the red spaces. To take an enemy piece, on your turn suround it on opposite \nsides with two pieces. The red spaces count as enemy pieces when it is not your\nturn and can be used in capturing either side, unless the King is on it in which\ncase it counts as white only.";
 
 	Image undoimg;
 
@@ -82,6 +86,14 @@ public class UserInteraction extends JFrame{
 					g.setColor(Color.black);
 					g.drawRect((sizeX-textWidth)/2,(sizeY-textHeight)/2,textWidth,textHeight);
 					g.drawString("White has Won",(sizeX-textWidth)/2+30,(sizeY)/2+6);
+				}else if(tafl.rules){
+					g.setColor(new Color(255,255,255,210));
+					g.fillRect(60,60,sizeX-120,sizeY-120);
+					g.setColor(Color.black);
+					g.drawRect(60,60,sizeX-120,sizeY-120);
+					for (String line : rulesText.split("\n")){
+	        			g.drawString(line, frameX, frameY += g.getFontMetrics().getHeight());
+					}
 				}else{
 					if(tafl.selected){
 						g.setColor(Color.blue);
@@ -157,6 +169,7 @@ public class UserInteraction extends JFrame{
 					tafl.undo();
 				}else if(mX>620&&mX<720&&mY>10&&mY<50){
 					p("display rules");
+					tafl.rules();
 				}
 			}
 			public void mouseEntered(MouseEvent e) {}
