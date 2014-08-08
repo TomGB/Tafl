@@ -23,7 +23,7 @@ public class UserInteraction extends JFrame{
 	int frameY = 70;
 	Font f = new Font("Dialog", Font.PLAIN, 16);
 
-	String rulesText = "Black is attacking and goes first, white is defending it's King (the pink piece in the\nmiddle). To win black must surround the King on 4 sides or white must reach one\nof the four corners with its King. Pieces may move any distance in a strait line,\nhorisontally or vertically, unless another piece blocks it's path. Only the King may \nsit in the red spaces. To take an enemy piece, on your turn suround it on opposite \nsides with two pieces. The red spaces count as enemy pieces when it is not your\nturn and can be used in capturing either side, unless the King is on it in which\ncase it counts as white only.";
+	String rulesText = "Black is attacking and goes first, white is defending it's King (the pink piece in\nthe middle).\n\nTo win black must surround the King on 4 sides or white must reach one of the\nfour corners with its King.\n\nPieces may move any distance in a strait line,horisontally or vertically,\nunless another piece blocks its path.\n\nOnly the King may sit in the red spaces.\n\nTo take an enemy piece, on your turn suround it on opposite sides with\ntwo pieces.\n\nThe red spaces count as enemy pieces when it is not your turn and can be\nused in capturing either side, unless the King is on it in which case it counts as\nwhite only.";
 
 	Image undoimg;
 

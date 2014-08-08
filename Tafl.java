@@ -1,3 +1,6 @@
+import java.io.PrintWriter;
+import java.io.File;
+
 class Tafl {
 	boolean selected=false, whiteTurn=false, blackWin=false, whiteWin=false;
 	int selX, selY;
@@ -67,11 +70,28 @@ class Tafl {
 			board.loadHistory();
 			myGUI.repaint();
 		}
+		save();
 	}
 
 	public void rules(){
 		rules=!rules;
 		myGUI.repaint();
+	}
+
+	public void save(){
+		try{
+			PrintWriter savefile= new PrintWriter(new File("taflsave.txt"));
+			savefile.println("tafl save");
+			for (int j=0; j<boardHeight; j++) {
+				for (int i=0; i<boardWidth; i++) {
+					savefile.print(board.get(i,j));
+				}
+			}
+			savefile.flush();
+			p("save done");
+		}catch(Exception e){
+			p("error saving");
+		}
 	}
 	public static void p(Object o){System.out.println(o);}
 	public static int r(int x){return (int)(Math.random()*x);}
