@@ -120,6 +120,18 @@ public class UserInteraction extends JFrame{
 				g.setColor(Color.black);
 				g.drawRect(620,10,textWidth/2,textHeight);
 				g.drawString("Rules",620+30,30+6);
+
+				g.setColor(new Color(255,255,255,200));
+				g.fillRect(520,10,80,textHeight);
+				g.setColor(Color.black);
+				g.drawRect(520,10,80,textHeight);
+				g.drawString("Save",520+20,30+6);
+
+				g.setColor(new Color(255,255,255,200));
+				g.fillRect(420,10,80,textHeight);
+				g.setColor(Color.black);
+				g.drawRect(420,10,80,textHeight);
+				g.drawString("Load",420+20,30+6);
 			}
 		};
 
@@ -171,6 +183,12 @@ public class UserInteraction extends JFrame{
 				}else if(mX>620&&mX<720&&mY>10&&mY<50){
 					p("display rules");
 					tafl.rules();
+				}else if(mX>520&&mX<600&&mY>10&&mY<50){
+					p("save game");
+					tafl.save();
+				}else if(mX>420&&mX<500&&mY>10&&mY<50){
+					p("load game");
+					tafl.load();
 				}
 			}
 			public void mouseEntered(MouseEvent e) {}
@@ -181,7 +199,7 @@ public class UserInteraction extends JFrame{
 			public void mouseMoved(MouseEvent e) {
 				mX=e.getX();
 				mY=e.getY();
-				if((!tafl.whiteWin && !tafl.blackWin&&mX>70&&mX<120&&mY>10&&mY<50)||(mX>620&&mX<720&&mY>10&&mY<50)){
+				if((!tafl.whiteWin && !tafl.blackWin&&mX>70&&mX<120&&mY>10&&mY<50)||(mX>620&&mX<720&&mY>10&&mY<50)||(mX>520&&mX<600&&mY>10&&mY<50)||(mX>420&&mX<500&&mY>10&&mY<50)){
 					setCursor(new Cursor(Cursor.HAND_CURSOR));
 				}else{
 					setCursor(new Cursor(Cursor.DEFAULT_CURSOR));

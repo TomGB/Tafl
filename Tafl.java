@@ -1,5 +1,7 @@
 import java.io.PrintWriter;
 import java.io.File;
+import java.io.BufferedReader;
+import java.io.FileReader;
 
 class Tafl {
 	boolean selected=false, whiteTurn=false, blackWin=false, whiteWin=false;
@@ -70,7 +72,6 @@ class Tafl {
 			board.loadHistory();
 			myGUI.repaint();
 		}
-		save();
 	}
 
 	public void rules(){
@@ -92,6 +93,19 @@ class Tafl {
 		}catch(Exception e){
 			p("error saving");
 		}
+	}
+
+	public void load(){
+		try(BufferedReader br = new BufferedReader(new FileReader("taflsave.txt"))) {
+			br.readLine();
+	        String line = br.readLine();
+	        for (int i=0; i<line.length(); i++) {
+	        	board.set(i%boardWidth, i/boardHeight, line.charAt(i));
+			}
+			myGUI.repaint();
+   		}catch(Exception e){
+   			p("error reading file");
+   		}
 	}
 	public static void p(Object o){System.out.println(o);}
 	public static int r(int x){return (int)(Math.random()*x);}
