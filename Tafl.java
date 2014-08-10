@@ -16,7 +16,13 @@ class Tafl {
 		board.clear();
 		board.setUp();
 		myGUI = new UserInteraction(this);
+	}
 
+	public void reset(){
+		board.clear();
+		board.setUp();
+		whiteTurn=false;
+		myGUI.repaint();
 	}
 
 	public void update(int button, int posX, int posY){ //if left button clicked
@@ -83,6 +89,11 @@ class Tafl {
 		try{
 			PrintWriter savefile= new PrintWriter(new File("taflsave.txt"));
 			savefile.println("tafl save");
+			if(whiteTurn){	
+				savefile.println("White's Turn");
+			}else{
+				savefile.println("Black's Turn");
+			}
 			for (int j=0; j<boardHeight; j++) {
 				for (int i=0; i<boardWidth; i++) {
 					savefile.print(board.get(i,j));
@@ -98,10 +109,13 @@ class Tafl {
 	public void load(){
 		try(BufferedReader br = new BufferedReader(new FileReader("taflsave.txt"))) {
 			br.readLine();
+			String turn = br.readLine();
 	        String line = br.readLine();
 	        for (int i=0; i<line.length(); i++) {
 	        	board.set(i%boardWidth, i/boardHeight, line.charAt(i));
 			}
+			p(turn);
+			whiteTurn = (turn.equals("White's Turn"));
 			myGUI.repaint();
    		}catch(Exception e){
    			p("error reading file");

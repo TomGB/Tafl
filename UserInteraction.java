@@ -95,11 +95,39 @@ public class UserInteraction extends JFrame{
 	        			g.drawString(line, frameX, frameY += g.getFontMetrics().getHeight());
 					}
 					frameY = 70;
-				}else{
-					if(tafl.selected){
-						g.setColor(Color.blue);
-						g.drawRect(50+gridSpace*tafl.selX+selectSpacing,50+gridSpace*tafl.selY+selectSpacing,gridSpace-selectSpacing*2,gridSpace-selectSpacing*2);
+					g.setColor(new Color(0,0,0,50));
+					g.fillRect(130,10,textWidth,textHeight);
+					g.setColor(Color.black);
+					g.drawRect(130,10,textWidth,textHeight);
+					if(tafl.whiteTurn){
+						g.drawString("White's Turn",130+30,30+6);
+					}else{
+						g.drawString("Black's Turn",130+30,30+6);
 					}
+					g.setColor(new Color(0,0,0,50));
+					g.fillRect(70,10,50,textHeight);
+					g.setColor(Color.black);
+					g.drawRect(70,10,50,textHeight);
+					g.drawImage(undoimg,74,12, null);
+
+					g.setColor(new Color(0,0,0,50));
+					g.fillRect(550,10,80,textHeight);
+					g.setColor(Color.black);
+					g.drawRect(550,10,80,textHeight);
+					g.drawString("Save",550+20,30+6);
+
+					g.setColor(new Color(0,0,0,50));
+					g.fillRect(460,10,80,textHeight);
+					g.setColor(Color.black);
+					g.drawRect(460,10,80,textHeight);
+					g.drawString("Load",460+20,30+6);
+
+					g.setColor(new Color(0,0,0,50));
+					g.fillRect(370,10,80,textHeight);
+					g.setColor(Color.black);
+					g.drawRect(370,10,80,textHeight);
+					g.drawString("Reset",370+20,30+6);
+				}else{
 					g.setColor(new Color(255,255,255,200));
 					g.fillRect(130,10,textWidth,textHeight);
 					g.setColor(Color.black);
@@ -114,24 +142,36 @@ public class UserInteraction extends JFrame{
 					g.setColor(Color.black);
 					g.drawRect(70,10,50,textHeight);
 					g.drawImage(undoimg,74,12, null);
+
+					g.setColor(new Color(255,255,255,200));
+					g.fillRect(550,10,80,textHeight);
+					g.setColor(Color.black);
+					g.drawRect(550,10,80,textHeight);
+					g.drawString("Save",550+20,30+6);
+
+					g.setColor(new Color(255,255,255,200));
+					g.fillRect(460,10,80,textHeight);
+					g.setColor(Color.black);
+					g.drawRect(460,10,80,textHeight);
+					g.drawString("Load",460+20,30+6);
+
+					g.setColor(new Color(255,255,255,200));
+					g.fillRect(370,10,80,textHeight);
+					g.setColor(Color.black);
+					g.drawRect(370,10,80,textHeight);
+					g.drawString("Reset",370+20,30+6);
+
+					if(tafl.selected){
+						g.setColor(Color.blue);
+						g.drawRect(50+gridSpace*tafl.selX+selectSpacing,50+gridSpace*tafl.selY+selectSpacing,gridSpace-selectSpacing*2,gridSpace-selectSpacing*2);
+					}
 				}
-				g.setColor(new Color(255,255,255,200));
-				g.fillRect(620,10,textWidth/2,textHeight);
-				g.setColor(Color.black);
-				g.drawRect(620,10,textWidth/2,textHeight);
-				g.drawString("Rules",620+30,30+6);
 
 				g.setColor(new Color(255,255,255,200));
-				g.fillRect(520,10,80,textHeight);
+				g.fillRect(640,10,80,textHeight);
 				g.setColor(Color.black);
-				g.drawRect(520,10,80,textHeight);
-				g.drawString("Save",520+20,30+6);
-
-				g.setColor(new Color(255,255,255,200));
-				g.fillRect(420,10,80,textHeight);
-				g.setColor(Color.black);
-				g.drawRect(420,10,80,textHeight);
-				g.drawString("Load",420+20,30+6);
+				g.drawRect(640,10,80,textHeight);
+				g.drawString("Rules",640+20,30+6);
 			}
 		};
 
@@ -180,15 +220,18 @@ public class UserInteraction extends JFrame{
 				}else if(!tafl.whiteWin && !tafl.blackWin && mX>70 && mX<120 && mY>10 && mY<90){
 					p("undo clicked");
 					tafl.undo();
-				}else if(mX>620&&mX<720&&mY>10&&mY<50){
+				}else if(mX>640&&mX<720&&mY>10&&mY<50){
 					p("display rules");
 					tafl.rules();
-				}else if(mX>520&&mX<600&&mY>10&&mY<50){
+				}else if(!tafl.rules&&mX>550&&mX<630&&mY>10&&mY<50){
 					p("save game");
 					tafl.save();
-				}else if(mX>420&&mX<500&&mY>10&&mY<50){
+				}else if(!tafl.rules&&mX>460&&mX<540&&mY>10&&mY<50){
 					p("load game");
 					tafl.load();
+				}else if(!tafl.rules&&mX>370&&mX<450&&mY>10&&mY<50){
+					p("reset game");
+					tafl.reset();
 				}
 			}
 			public void mouseEntered(MouseEvent e) {}
@@ -199,7 +242,7 @@ public class UserInteraction extends JFrame{
 			public void mouseMoved(MouseEvent e) {
 				mX=e.getX();
 				mY=e.getY();
-				if((!tafl.whiteWin && !tafl.blackWin&&mX>70&&mX<120&&mY>10&&mY<50)||(mX>620&&mX<720&&mY>10&&mY<50)||(mX>520&&mX<600&&mY>10&&mY<50)||(mX>420&&mX<500&&mY>10&&mY<50)){
+				if((!tafl.whiteWin && !tafl.blackWin&&mX>70&&mX<120&&mY>10&&mY<50)||(mX>640&&mX<720&&mY>10&&mY<50)||(!tafl.rules&&mX>550&&mX<630&&mY>10&&mY<50)||(!tafl.rules&&mX>460&&mX<540&&mY>10&&mY<50)||(!tafl.rules&&mX>370&&mX<450&&mY>10&&mY<50)){
 					setCursor(new Cursor(Cursor.HAND_CURSOR));
 				}else{
 					setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
