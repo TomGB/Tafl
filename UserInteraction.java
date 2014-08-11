@@ -74,6 +74,12 @@ public class UserInteraction extends JFrame{
 						}
 					}
 				}
+
+				/*=========================================================================
+				===================   Need to create a text box class   ===================
+				=========================================================================*/
+
+
 				if(tafl.blackWin){
 					g.setColor(new Color(255,255,255,200));
 					g.fillRect((sizeX-textWidth)/2,(sizeY-textHeight)/2,textWidth,textHeight);
@@ -220,7 +226,7 @@ public class UserInteraction extends JFrame{
 				}else if(!tafl.whiteWin && !tafl.blackWin && mX>70 && mX<120 && mY>10 && mY<90){
 					p("undo clicked");
 					tafl.undo();
-				}else if(mX>640&&mX<720&&mY>10&&mY<50){
+				}else if(mX>640&&mX<720&&mY>10&&mY<50){//these should be in a class or method not hard coded!!!
 					p("display rules");
 					tafl.rules();
 				}else if(!tafl.rules&&mX>550&&mX<630&&mY>10&&mY<50){
