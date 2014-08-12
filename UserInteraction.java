@@ -41,6 +41,11 @@ public class UserInteraction extends JFrame{
 			p("error reading image");
 		}
 
+		TextBox reset = new TextBox(370,10,80,40,"Reset");
+		TextBox load = new TextBox(460,10,80,40,"Load");
+		TextBox save = new TextBox(550,10,80,40,"Save");
+		TextBox rules = new TextBox(640,10,80,40,"Rules");
+
 		setResizable( false );
 
 		JPanel drawing = new JPanel(){
@@ -116,23 +121,11 @@ public class UserInteraction extends JFrame{
 					g.drawRect(70,10,50,textHeight);
 					g.drawImage(undoimg,74,12, null);
 
-					g.setColor(new Color(0,0,0,50));
-					g.fillRect(550,10,80,textHeight);
-					g.setColor(Color.black);
-					g.drawRect(550,10,80,textHeight);
-					g.drawString("Save",550+20,30+6);
+					save.draw(false,g);
+					load.draw(false,g);
+					reset.draw(false,g);
+					rules.draw(true,g);
 
-					g.setColor(new Color(0,0,0,50));
-					g.fillRect(460,10,80,textHeight);
-					g.setColor(Color.black);
-					g.drawRect(460,10,80,textHeight);
-					g.drawString("Load",460+20,30+6);
-
-					g.setColor(new Color(0,0,0,50));
-					g.fillRect(370,10,80,textHeight);
-					g.setColor(Color.black);
-					g.drawRect(370,10,80,textHeight);
-					g.drawString("Reset",370+20,30+6);
 				}else{
 					g.setColor(new Color(255,255,255,200));
 					g.fillRect(130,10,textWidth,textHeight);
@@ -149,35 +142,16 @@ public class UserInteraction extends JFrame{
 					g.drawRect(70,10,50,textHeight);
 					g.drawImage(undoimg,74,12, null);
 
-					g.setColor(new Color(255,255,255,200));
-					g.fillRect(550,10,80,textHeight);
-					g.setColor(Color.black);
-					g.drawRect(550,10,80,textHeight);
-					g.drawString("Save",550+20,30+6);
-
-					g.setColor(new Color(255,255,255,200));
-					g.fillRect(460,10,80,textHeight);
-					g.setColor(Color.black);
-					g.drawRect(460,10,80,textHeight);
-					g.drawString("Load",460+20,30+6);
-
-					g.setColor(new Color(255,255,255,200));
-					g.fillRect(370,10,80,textHeight);
-					g.setColor(Color.black);
-					g.drawRect(370,10,80,textHeight);
-					g.drawString("Reset",370+20,30+6);
+					save.draw(true,g);
+					load.draw(true,g);
+					reset.draw(true,g);
+					rules.draw(true,g);
 
 					if(tafl.selected){
 						g.setColor(Color.blue);
 						g.drawRect(50+gridSpace*tafl.selX+selectSpacing,50+gridSpace*tafl.selY+selectSpacing,gridSpace-selectSpacing*2,gridSpace-selectSpacing*2);
 					}
 				}
-
-				g.setColor(new Color(255,255,255,200));
-				g.fillRect(640,10,80,textHeight);
-				g.setColor(Color.black);
-				g.drawRect(640,10,80,textHeight);
-				g.drawString("Rules",640+20,30+6);
 			}
 		};
 
@@ -226,16 +200,16 @@ public class UserInteraction extends JFrame{
 				}else if(!tafl.whiteWin && !tafl.blackWin && mX>70 && mX<120 && mY>10 && mY<90){
 					p("undo clicked");
 					tafl.undo();
-				}else if(mX>640&&mX<720&&mY>10&&mY<50){//these should be in a class or method not hard coded!!!
+				}else if(rules.inside(mX,mY)){//these should be in a class or method not hard coded!!!
 					p("display rules");
 					tafl.rules();
-				}else if(!tafl.rules&&mX>550&&mX<630&&mY>10&&mY<50){
+				}else if(!tafl.rules&&save.inside(mX,mY)){
 					p("save game");
 					tafl.save();
-				}else if(!tafl.rules&&mX>460&&mX<540&&mY>10&&mY<50){
+				}else if(!tafl.rules&&load.inside(mX,mY)){
 					p("load game");
 					tafl.load();
-				}else if(!tafl.rules&&mX>370&&mX<450&&mY>10&&mY<50){
+				}else if(!tafl.rules&&reset.inside(mX,mY)){
 					p("reset game");
 					tafl.reset();
 				}
@@ -248,7 +222,7 @@ public class UserInteraction extends JFrame{
 			public void mouseMoved(MouseEvent e) {
 				mX=e.getX();
 				mY=e.getY();
-				if((!tafl.whiteWin && !tafl.blackWin&&mX>70&&mX<120&&mY>10&&mY<50)||(mX>640&&mX<720&&mY>10&&mY<50)||(!tafl.rules&&mX>550&&mX<630&&mY>10&&mY<50)||(!tafl.rules&&mX>460&&mX<540&&mY>10&&mY<50)||(!tafl.rules&&mX>370&&mX<450&&mY>10&&mY<50)){
+				if((!tafl.whiteWin && !tafl.blackWin&&mX>70&&mX<120&&mY>10&&mY<50)||save.inside(mX,mY)||load.inside(mX,mY)||reset.inside(mX,mY)||rules.inside(mX,mY)){
 					setCursor(new Cursor(Cursor.HAND_CURSOR));
 				}else{
 					setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
