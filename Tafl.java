@@ -50,19 +50,8 @@ class Tafl {
 					board.set(selX,selY,'e');
 					selected=false;
 					board.takePieces(posX, posY, original);
-					if(board.checkKing()){
-						blackWin=true;
-						for (int i=0; i<board.width; i++) {
-							for (int j=0; j<board.height; j++) {
-								if(board.get(i,j)=='k'){
-									board.set(i,j,'e');
-								}
-							}
-						}
-					}
-					if(board.checkWin()){
-						whiteWin=true;
-					}
+					blackWin=board.checkKing();
+					whiteWin=board.checkWin();
 				}
 			}
 		}
@@ -86,11 +75,7 @@ class Tafl {
 		try{
 			PrintWriter savefile= new PrintWriter(new File("taflsave.txt"));
 			savefile.println("tafl save");
-			if(whiteTurn){	
-				savefile.println("White's Turn");
-			}else{
-				savefile.println("Black's Turn");
-			}
+			savefile.println(whiteTurn?"White's Turn":"Black's Turn");
 			for (int j=0; j<boardHeight; j++) {
 				for (int i=0; i<boardWidth; i++) {
 					savefile.print(board.get(i,j));

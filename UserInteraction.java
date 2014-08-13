@@ -87,11 +87,6 @@ public class UserInteraction extends JFrame{
 					}
 				}
 
-				/*=========================================================================
-				===================   Need to create a text box class   ===================
-				=========================================================================*/
-
-
 				if(tafl.blackWin){
 					blackWinText.draw(true,g);
 				}else if(tafl.whiteWin){
@@ -153,7 +148,7 @@ public class UserInteraction extends JFrame{
 			public void mouseMoved(MouseEvent e) {setMouse(e.getX(),e.getY());}
 			public void mouseDragged(MouseEvent e) {setMouse(e.getX(),e.getY());}
 		});
-		
+
 		add("Center", drawing);
 		this.setSize(sizeX,sizeY);
 		repaint();

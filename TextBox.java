@@ -7,8 +7,8 @@ class TextBox {
 	int posX, posY, width, height;
 	String text;
 	Image image;
-	Color light = new Color(255,255,255,200);
-	Color dark = new Color(0,0,0,40);
+	final Color light = new Color(255,255,255,200);
+	final Color dark = new Color(0,0,0,40);
 
 	public TextBox(int _posX, int _posY, int _width, int _height, String _text){
 		posX = _posX;

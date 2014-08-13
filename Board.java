@@ -123,11 +123,18 @@ class Board {
 		for (int i=0; i<width; i++) {
 			for (int j=0; j<height; j++) {
 				if(get(i,j)=='k'){
-					return(
+					if(
 						(get(i-1,j)=='o'||get(i-1,j)=='b'||isKingSpace(i-1,j)) &&
 						(get(i,j-1)=='o'||get(i,j-1)=='b'||isKingSpace(i,j-1)) &&
 						(get(i+1,j)=='o'||get(i+1,j)=='b'||isKingSpace(i+1,j)) &&
-						(get(i,j+1)=='o'||get(i,j+1)=='b'||isKingSpace(i,j+1)));
+						(get(i,j+1)=='o'||get(i,j+1)=='b'||isKingSpace(i,j+1))
+					){
+						set(i,j,'e');
+						return true;
+					}
+					else{
+						return false;
+					}
 				}
 			}
 		}
