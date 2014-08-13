@@ -45,6 +45,11 @@ public class UserInteraction extends JFrame{
 		TextBox load = new TextBox(460,10,80,40,"Load");
 		TextBox save = new TextBox(550,10,80,40,"Save");
 		TextBox rules = new TextBox(640,10,80,40,"Rules");
+		TextBox undo = new TextBox(70,10,50,40,undoimg);
+		TextBox blackWinText = new TextBox((sizeX-textWidth)/2,(sizeY-textHeight)/2,textWidth,textHeight,"Black has Won");
+		TextBox whiteWinText = new TextBox((sizeX-textWidth)/2,(sizeY-textHeight)/2,textWidth,textHeight,"White has Won");
+		TextBox whiteTurnText = new TextBox(130,10,textWidth,textHeight,"White's Turn");
+		TextBox blackTurnText = new TextBox(130,10,textWidth,textHeight,"Black's Turn");
 
 		setResizable( false );
 
@@ -86,17 +91,9 @@ public class UserInteraction extends JFrame{
 
 
 				if(tafl.blackWin){
-					g.setColor(new Color(255,255,255,200));
-					g.fillRect((sizeX-textWidth)/2,(sizeY-textHeight)/2,textWidth,textHeight);
-					g.setColor(Color.black);
-					g.drawRect((sizeX-textWidth)/2,(sizeY-textHeight)/2,textWidth,textHeight);
-					g.drawString("Black has Won",(sizeX-textWidth)/2+30,(sizeY)/2+6);
+					blackWinText.draw(true,g);
 				}else if(tafl.whiteWin){
-					g.setColor(new Color(255,255,255,200));
-					g.fillRect((sizeX-textWidth)/2,(sizeY-textHeight)/2,textWidth,textHeight);
-					g.setColor(Color.black);
-					g.drawRect((sizeX-textWidth)/2,(sizeY-textHeight)/2,textWidth,textHeight);
-					g.drawString("White has Won",(sizeX-textWidth)/2+30,(sizeY)/2+6);
+					whiteWinText.draw(true, g);
 				}else if(tafl.rules){
 					g.setColor(new Color(255,255,255,210));
 					g.fillRect(60,60,sizeX-120,sizeY-120);
@@ -106,42 +103,25 @@ public class UserInteraction extends JFrame{
 	        			g.drawString(line, frameX, frameY += g.getFontMetrics().getHeight());
 					}
 					frameY = 70;
-					g.setColor(new Color(0,0,0,50));
-					g.fillRect(130,10,textWidth,textHeight);
-					g.setColor(Color.black);
-					g.drawRect(130,10,textWidth,textHeight);
-					if(tafl.whiteTurn){
-						g.drawString("White's Turn",130+30,30+6);
-					}else{
-						g.drawString("Black's Turn",130+30,30+6);
-					}
-					g.setColor(new Color(0,0,0,50));
-					g.fillRect(70,10,50,textHeight);
-					g.setColor(Color.black);
-					g.drawRect(70,10,50,textHeight);
-					g.drawImage(undoimg,74,12, null);
 
+					if(tafl.whiteTurn){
+						whiteTurnText.draw(false,g);
+					}else{
+						blackTurnText.draw(false,g);
+					}
+					undo.draw(false,g);
 					save.draw(false,g);
 					load.draw(false,g);
 					reset.draw(false,g);
 					rules.draw(true,g);
 
 				}else{
-					g.setColor(new Color(255,255,255,200));
-					g.fillRect(130,10,textWidth,textHeight);
-					g.setColor(Color.black);
-					g.drawRect(130,10,textWidth,textHeight);
 					if(tafl.whiteTurn){
-						g.drawString("White's Turn",130+30,30+6);
+						whiteTurnText.draw(true,g);
 					}else{
-						g.drawString("Black's Turn",130+30,30+6);
+						blackTurnText.draw(true,g);
 					}
-					g.setColor(new Color(255,255,255,200));
-					g.fillRect(70,10,50,textHeight);
-					g.setColor(Color.black);
-					g.drawRect(70,10,50,textHeight);
-					g.drawImage(undoimg,74,12, null);
-
+					undo.draw(true,g);
 					save.draw(true,g);
 					load.draw(true,g);
 					reset.draw(true,g);
@@ -197,10 +177,10 @@ public class UserInteraction extends JFrame{
 				if(tempX<9 && tempX>=0 && tempY<9 && tempY>=0){
 					p("update call");
 					tafl.update(e.getButton(),(int)tempX,(int)tempY);
-				}else if(!tafl.whiteWin && !tafl.blackWin && mX>70 && mX<120 && mY>10 && mY<90){
+				}else if(!tafl.whiteWin && !tafl.blackWin && undo.inside(mX,mY)){
 					p("undo clicked");
 					tafl.undo();
-				}else if(rules.inside(mX,mY)){//these should be in a class or method not hard coded!!!
+				}else if(rules.inside(mX,mY)){
 					p("display rules");
 					tafl.rules();
 				}else if(!tafl.rules&&save.inside(mX,mY)){
@@ -222,7 +202,7 @@ public class UserInteraction extends JFrame{
 			public void mouseMoved(MouseEvent e) {
 				mX=e.getX();
 				mY=e.getY();
-				if((!tafl.whiteWin && !tafl.blackWin&&mX>70&&mX<120&&mY>10&&mY<50)||save.inside(mX,mY)||load.inside(mX,mY)||reset.inside(mX,mY)||rules.inside(mX,mY)){
+				if((!tafl.whiteWin && !tafl.blackWin&&undo.inside(mX,mY))||save.inside(mX,mY)||load.inside(mX,mY)||reset.inside(mX,mY)||rules.inside(mX,mY)){
 					setCursor(new Cursor(Cursor.HAND_CURSOR));
 				}else{
 					setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
