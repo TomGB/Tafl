@@ -25,7 +25,7 @@ class Tafl {
 		myGUI.repaint();
 	}
 
-	public void update(int button, int posX, int posY){ //if left button clicked
+	public void update(int posX, int posY){ //if left button clicked
 		if(rules){
 			rules=false;
 		}else{
@@ -36,35 +36,32 @@ class Tafl {
 				board.clear();
 				board.setUp();
 			}
-			
-			if(button==1){
-				if((!whiteTurn&&board.isBlack(posX,posY))||(whiteTurn&&board.isWhite(posX,posY))){
-					selX=posX;
-					selY=posY;
-					selected=true;
-				}else if(selected){
-					char original = board.get(selX,selY);
-					if(board.validMove(selX, selY, posX, posY, original)){ //move piece
-						board.turnNum++;
-						board.saveHistory();
-						whiteTurn = !whiteTurn;
-						board.set(posX,posY,original);
-						board.set(selX,selY,'e');
-						selected=false;
-						board.takePieces(posX, posY, original);
-						if(board.checkKing()){
-							blackWin=true;
-							for (int i=0; i<board.width; i++) {
-								for (int j=0; j<board.height; j++) {
-									if(board.get(i,j)=='k'){
-										board.set(i,j,'e');
-									}
+			if((!whiteTurn&&board.isBlack(posX,posY))||(whiteTurn&&board.isWhite(posX,posY))){
+				selX=posX;
+				selY=posY;
+				selected=true;
+			}else if(selected){
+				char original = board.get(selX,selY);
+				if(board.validMove(selX, selY, posX, posY, original)){ //move piece
+					board.turnNum++;
+					board.saveHistory();
+					whiteTurn = !whiteTurn;
+					board.set(posX,posY,original);
+					board.set(selX,selY,'e');
+					selected=false;
+					board.takePieces(posX, posY, original);
+					if(board.checkKing()){
+						blackWin=true;
+						for (int i=0; i<board.width; i++) {
+							for (int j=0; j<board.height; j++) {
+								if(board.get(i,j)=='k'){
+									board.set(i,j,'e');
 								}
 							}
 						}
-						if(board.checkWin()){
-							whiteWin=true;
-						}
+					}
+					if(board.checkWin()){
+						whiteWin=true;
 					}
 				}
 			}

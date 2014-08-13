@@ -23,6 +23,8 @@ public class UserInteraction extends JFrame{
 	int frameY = 70;
 	Font f = new Font("Dialog", Font.PLAIN, 16);
 
+	TextBox reset,load,save,rules,undo,blackWinText,whiteWinText,whiteTurnText,blackTurnText;
+
 	String rulesText = "Black is attacking and goes first, white is defending it's King (the pink piece in\nthe middle).\n\nTo win black must surround the King on 4 sides or white must reach one of the\nfour corners with its King.\n\nPieces may move any distance in a strait line,horisontally or vertically,\nunless another piece blocks its path.\n\nOnly the King may sit in the red spaces.\n\nTo take an enemy piece, on your turn suround it on opposite sides with\ntwo pieces.\n\nThe red spaces count as enemy pieces when it is not your turn and can be\nused in capturing either side, unless the King is on it in which case it counts as\nwhite only.";
 
 	Image undoimg;
@@ -41,15 +43,15 @@ public class UserInteraction extends JFrame{
 			p("error reading image");
 		}
 
-		TextBox reset = new TextBox(370,10,80,40,"Reset");
-		TextBox load = new TextBox(460,10,80,40,"Load");
-		TextBox save = new TextBox(550,10,80,40,"Save");
-		TextBox rules = new TextBox(640,10,80,40,"Rules");
-		TextBox undo = new TextBox(70,10,50,40,undoimg);
-		TextBox blackWinText = new TextBox((sizeX-textWidth)/2,(sizeY-textHeight)/2,textWidth,textHeight,"Black has Won");
-		TextBox whiteWinText = new TextBox((sizeX-textWidth)/2,(sizeY-textHeight)/2,textWidth,textHeight,"White has Won");
-		TextBox whiteTurnText = new TextBox(130,10,textWidth,textHeight,"White's Turn");
-		TextBox blackTurnText = new TextBox(130,10,textWidth,textHeight,"Black's Turn");
+		reset = new TextBox(370,10,80,40,"Reset");
+		load = new TextBox(460,10,80,40,"Load");
+		save = new TextBox(550,10,80,40,"Save");
+		rules = new TextBox(640,10,80,40,"Rules");
+		undo = new TextBox(70,10,50,40,undoimg);
+		blackWinText = new TextBox((sizeX-textWidth)/2,(sizeY-textHeight)/2,textWidth,textHeight,"Black has Won");
+		whiteWinText = new TextBox((sizeX-textWidth)/2,(sizeY-textHeight)/2,textWidth,textHeight,"White has Won");
+		whiteTurnText = new TextBox(130,10,textWidth,textHeight,"White's Turn");
+		blackTurnText = new TextBox(130,10,textWidth,textHeight,"Black's Turn");
 
 		setResizable( false );
 
@@ -136,90 +138,72 @@ public class UserInteraction extends JFrame{
 		};
 
 		addKeyListener(new KeyListener(){ //NOT THIS BUT FRAME
-			public void keyPressed(KeyEvent e){
-				if(e.getKeyCode()==87){
-					up=true;
-				}else if(e.getKeyCode()==83){
-					down=true;
-				}else if(e.getKeyCode()==65){
-					left=true;
-				}else if(e.getKeyCode()==68){
-					right=true;
-				}else if(e.getKeyCode()==32){
-					space=true;
-				}
-
-			}
-			public void keyReleased(KeyEvent e){
-				if(e.getKeyCode()==87){
-					up=false;
-				}else if(e.getKeyCode()==83){
-					down=false;
-				}else if(e.getKeyCode()==65){
-					left=false;
-				}else if(e.getKeyCode()==68){
-					right=false;
-				}else if(e.getKeyCode()==32){
-					space=false;
-				}
-			}
+			public void keyPressed(KeyEvent e)	{	setKey(true,e.getKeyCode());	}
+			public void keyReleased(KeyEvent e)	{	setKey(false,e.getKeyCode());	}
 			public void keyTyped(KeyEvent e){}
 		});
-
 		drawing.addMouseListener(new MouseListener(){
-			public void mousePressed(MouseEvent e) {
-				mouseIsDown=true;
-			}
-			public void mouseReleased(MouseEvent e) {
-				mouseIsDown=false;
-				float tempX=((float)(mX-50)/gridSpace);
-				float tempY=((float)(mY-50)/gridSpace);
-				if(tempX<9 && tempX>=0 && tempY<9 && tempY>=0){
-					p("update call");
-					tafl.update(e.getButton(),(int)tempX,(int)tempY);
-				}else if(!tafl.whiteWin && !tafl.blackWin && undo.inside(mX,mY)){
-					p("undo clicked");
-					tafl.undo();
-				}else if(rules.inside(mX,mY)){
-					p("display rules");
-					tafl.rules();
-				}else if(!tafl.rules&&save.inside(mX,mY)){
-					p("save game");
-					tafl.save();
-				}else if(!tafl.rules&&load.inside(mX,mY)){
-					p("load game");
-					tafl.load();
-				}else if(!tafl.rules&&reset.inside(mX,mY)){
-					p("reset game");
-					tafl.reset();
-				}
-			}
+			public void mousePressed(MouseEvent e) {setMouse(true);}
+			public void mouseReleased(MouseEvent e) {setMouse(false);}
 			public void mouseEntered(MouseEvent e) {}
 			public void mouseExited(MouseEvent e) {}
 			public void mouseClicked(MouseEvent e) {}
 		});
 		drawing.addMouseMotionListener(new MouseMotionListener(){
-			public void mouseMoved(MouseEvent e) {
-				mX=e.getX();
-				mY=e.getY();
-				if((!tafl.whiteWin && !tafl.blackWin&&undo.inside(mX,mY))||save.inside(mX,mY)||load.inside(mX,mY)||reset.inside(mX,mY)||rules.inside(mX,mY)){
-					setCursor(new Cursor(Cursor.HAND_CURSOR));
-				}else{
-					setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-				}
-			}
-			public void mouseDragged(MouseEvent e) {
-				mX=e.getX();
-				mY=e.getY();
-			}
+			public void mouseMoved(MouseEvent e) {setMouse(e.getX(),e.getY());}
+			public void mouseDragged(MouseEvent e) {setMouse(e.getX(),e.getY());}
 		});
+		
 		add("Center", drawing);
 		this.setSize(sizeX,sizeY);
 		repaint();
 		setVisible(true);
 		setDefaultCloseOperation(EXIT_ON_CLOSE); //exit application when x is clicked
 	}
-
+	public void setKey(boolean state, int key){
+			 if(key==87){	up=state;}
+		else if(key==83){	down=state;}
+		else if(key==65){	left=state;}
+		else if(key==68){	right=state;}
+		else if(key==32){	space=state;}
+	}
+	public void setMouse(int _mX, int _mY){
+		mX=_mX;
+		mY=_mY;
+		if((!tafl.whiteWin && !tafl.blackWin&&undo.inside(mX,mY))||save.inside(mX,mY)||load.inside(mX,mY)||reset.inside(mX,mY)||rules.inside(mX,mY)){
+			setCursor(new Cursor(Cursor.HAND_CURSOR));
+		}else{
+			setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+		}
+	}
+	public void setMouse(boolean state){
+		if(state){
+			mouseIsDown=true;
+		}else{
+			mouseIsDown=false;
+			float tempX=((float)(mX-50)/gridSpace);
+			float tempY=((float)(mY-50)/gridSpace);
+			if(tempX<9 && tempX>=0 && tempY<9 && tempY>=0){
+				p("update call");
+				tafl.update((int)tempX,(int)tempY);
+			}else if(!tafl.whiteWin && !tafl.blackWin && undo.inside(mX,mY)){
+				p("undo clicked");
+				tafl.undo();
+			}else if(rules.inside(mX,mY)){
+				p("display rules");
+				tafl.rules();
+			}else if(!tafl.rules&&save.inside(mX,mY)){
+				p("save game");
+				tafl.save();
+			}else if(!tafl.rules&&load.inside(mX,mY)){
+				p("load game");
+				tafl.load();
+			}else if(!tafl.rules&&reset.inside(mX,mY)){
+				p("reset game");
+				tafl.reset();
+			}
+		}
+	}
 	public static void p(Object o){System.out.println(o);}
 	public static int r(int x){return (int)(Math.random()*x);}
 }
