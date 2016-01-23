@@ -4,13 +4,27 @@ class Board {
 	int width, height;
 	int turnNum;
 
-	ArrayList<String> history;;
+	ArrayList<String> history;
 
 	public Board(int _width, int _height){
 		width = _width;
 		height = _height;
 		pieces = new char[width][height];
 	}
+
+	public Board(int _width, int _height, char currentState[][]){
+		width = _width;
+		height = _height;
+
+		pieces = new char[width][height];
+		
+		for (int i=0; i<width; i++) {
+			for (int j=0; j<height; j++) {
+				pieces[i][j] = currentState[i][j];
+			}
+		}
+	}
+
 	public void clear(){
 		for (int i=0; i<width; i++) {
 			for (int j=0; j<height; j++) {
@@ -55,15 +69,34 @@ class Board {
 		}
 	}
 	public void set(int x, int y, char type){
-		pieces[x][y]=type;
+		try{
+			pieces[x][y] = type;
+		}catch(ArrayIndexOutOfBoundsException e){
+		}
 	}
 	public boolean isBlack(int x, int y){
-		char tempPiece = pieces[x][y];
-		return (tempPiece=='b');
+		try{
+			char tempPiece = pieces[x][y];
+			return (tempPiece=='b');
+		}catch(ArrayIndexOutOfBoundsException e){
+			return false;
+		}
 	}
 	public boolean isWhite(int x, int y){
-		char tempPiece = pieces[x][y];
-		return (tempPiece=='w'||tempPiece=='k');
+		try{
+			char tempPiece = pieces[x][y];
+			return (tempPiece=='w'||tempPiece=='k');
+		}catch(ArrayIndexOutOfBoundsException e){
+			return false;
+		}
+	}
+	public boolean isKing(int x, int y){
+		try{
+			char tempPiece = pieces[x][y];
+			return (tempPiece=='k');
+		}catch(ArrayIndexOutOfBoundsException e){
+			return false;
+		}
 	}
 	public boolean validMove(int x1, int y1, int x2, int y2, char piece){
 		if(get(x2,y2)!='e'){
@@ -99,6 +132,23 @@ class Board {
 	public boolean isEnemyKingSpace(int x, int y){
 		return ((x==0&&y==0)||(x==0&&y==height-1)||(x==width-1&&y==0)||(x==width-1&&y==height-1)||(x==width/2&&y==height/2&&!(get(x,y)=='k')));
 	}
+
+	public boolean checkIfPieceIsTaken(int x, int y, char piece){
+		if(y<width-2&&isEnemyPawn(x, y+1, piece)&&(isFriend(x, y+2, piece)||isEnemyKingSpace(x,y+2))){
+			return true;
+		}
+		if(x<width-2&&isEnemyPawn(x+1, y, piece)&&(isFriend(x+2, y, piece)||isEnemyKingSpace(x+2,y))){
+			return true;
+		}
+		if(y>1&&isEnemyPawn(x, y-1, piece)&&(isFriend(x, y-2, piece)||isEnemyKingSpace(x,y-2))){
+			return true;
+		}
+		if(x>1&&isEnemyPawn(x-1, y, piece)&&(isFriend(x-2, y, piece)||isEnemyKingSpace(x-2,y))){
+			return true;
+		}
+		return false;
+	}
+
 	public void takePieces(int x, int y, char piece){
 		if(y<width-2&&isEnemyPawn(x, y+1, piece)&&(isFriend(x, y+2, piece)||isEnemyKingSpace(x,y+2))){
 			set(x, y+1, 'e');

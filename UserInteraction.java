@@ -25,11 +25,18 @@ public class UserInteraction extends JFrame{
 
 	TextBox reset,load,save,rules,undo,blackWinText,whiteWinText,whiteTurnText,blackTurnText;
 
-	String rulesText = "Black is attacking and goes first, white is defending it's King (the pink piece in\nthe middle).\n\nTo win black must surround the King on 4 sides or white must reach one of the\nfour corners with its King.\n\nPieces may move any distance in a strait line,horisontally or vertically,\nunless another piece blocks its path.\n\nOnly the King may sit in the red spaces.\n\nTo take an enemy piece, on your turn suround it on opposite sides with\ntwo pieces.\n\nThe red spaces count as enemy pieces when it is not your turn and can be\nused in capturing either side, unless the King is on it in which case it counts as\nwhite only.";
+	String rulesText;
 
 	Image undoimg;
 
 	public UserInteraction(Tafl _tafl){
+
+		rulesText = "Black is attacking and goes first, white is defending it's King (the pink piece in\nthe middle).\n\n";
+		rulesText+= "To win black must surround the King on 4 sides or white must reach one of the\nfour corners with its King.\n\n";
+		rulesText+= "Pieces may move any distance in a strait line,horisontally or vertically,\nunless another piece blocks its path.\n\n";
+		rulesText+= "Only the King may sit in the red spaces.\n\nTo take an enemy piece, on your turn suround it on opposite sides with\n";
+		rulesText+= "two pieces.\n\nThe red spaces count as enemy pieces when it is not your turn and can be\n";
+		rulesText+= "used in capturing either side, unless the King is on it in which case it counts as\nwhite only.";
 
 		setTitle("Tafl");
 
@@ -64,16 +71,16 @@ public class UserInteraction extends JFrame{
 				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON); //anti alias to make lines smooth
 				AffineTransform at = g2.getTransform();
 
-				for (int i=0; i<tafl.board.width; i++) {
-					for (int j=0; j<tafl.board.height; j++) {
+				for (int i=0; i<tafl.mainBoard.width; i++) {
+					for (int j=0; j<tafl.mainBoard.height; j++) {
 						g.setColor(Color.white);
-						if((i==0&&j==0)||(i==0&&j==tafl.board.width-1)||(i==8&&j==0)||(i==8&&j==8)||(i==4&&j==4)){
+						if((i==0&&j==0)||(i==0&&j==tafl.mainBoard.width-1)||(i==8&&j==0)||(i==8&&j==8)||(i==4&&j==4)){
 							g.setColor(Color.red);
 						}
 						g.fillRect(50+gridSpace*i,50+gridSpace*j,gridSpace,gridSpace);
 						g.setColor(Color.black);
 						g.drawRect(50+gridSpace*i,50+gridSpace*j,gridSpace,gridSpace);
-						char tempPiece = tafl.board.get(i,j);
+						char tempPiece = tafl.mainBoard.get(i,j);
 						if(tempPiece=='b'){
 							g.setColor(Color.black);
 							g.fillOval(50+gridSpace*i+pieceSpace,50+gridSpace*j+pieceSpace,pieceRad,pieceRad);
@@ -129,6 +136,13 @@ public class UserInteraction extends JFrame{
 						g.drawRect(50+gridSpace*tafl.selX+selectSpacing,50+gridSpace*tafl.selY+selectSpacing,gridSpace-selectSpacing*2,gridSpace-selectSpacing*2);
 					}
 				}
+
+				// g.setColor(Color.black);
+
+				// for (int i=0; i<tafl.possibleMoves.size(); i++) {
+				// 	Moves temp = tafl.possibleMoves.get(i);
+				// 	g.fillRect(50+gridSpace*temp.endX+selectSpacing,50+gridSpace*temp.endY+selectSpacing,gridSpace-selectSpacing*2,gridSpace-selectSpacing*2);
+				// }
 			}
 		};
 

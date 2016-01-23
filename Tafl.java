@@ -2,6 +2,9 @@ import java.io.PrintWriter;
 import java.io.File;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 class Tafl {
 	boolean selected=false, whiteTurn=false, blackWin=false, whiteWin=false;
@@ -9,20 +12,23 @@ class Tafl {
 	boolean gameOver=false, rules=false;
 	int boardWidth = 9;
 	int boardHeight = 9;
-	Board board = new Board(boardWidth,boardHeight);
+	Board mainBoard = new Board(boardWidth,boardHeight);
 	UserInteraction myGUI;
+	int numMoves = 0;
+	Bot myBot = new Bot(this);
 
 	public Tafl(){
-		board.clear();
-		board.setUp();
+		mainBoard.clear();
+		mainBoard.setUp();
 		myGUI = new UserInteraction(this);
 	}
 
 	public void reset(){
-		board.clear();
-		board.setUp();
+		mainBoard.clear();
+		mainBoard.setUp();
 		whiteTurn=false;
 		myGUI.repaint();
+		numMoves = 0;
 	}
 
 	public void update(int posX, int posY){ //if left button clicked
@@ -33,35 +39,47 @@ class Tafl {
 				whiteTurn=false;
 				whiteWin=false;
 				blackWin=false;
-				board.clear();
-				board.setUp();
+				reset();
 			}
-			if((!whiteTurn&&board.isBlack(posX,posY))||(whiteTurn&&board.isWhite(posX,posY))){
+			if((!whiteTurn&&mainBoard.isBlack(posX,posY))||(whiteTurn&&mainBoard.isWhite(posX,posY))){
 				selX=posX;
 				selY=posY;
 				selected=true;
 			}else if(selected){
-				char original = board.get(selX,selY);
-				if(board.validMove(selX, selY, posX, posY, original)){ //move piece
-					board.turnNum++;
-					board.saveHistory();
+				char original = mainBoard.get(selX,selY);
+				if(mainBoard.validMove(selX, selY, posX, posY, original)){ //move piece
+					mainBoard.turnNum++;
+					mainBoard.saveHistory();
 					whiteTurn = !whiteTurn;
-					board.set(posX,posY,original);
-					board.set(selX,selY,'e');
+					mainBoard.set(posX,posY,original);
+					mainBoard.set(selX,selY,'e');
 					selected=false;
-					board.takePieces(posX, posY, original);
-					blackWin=board.checkKing();
-					whiteWin=board.checkWin();
+					mainBoard.takePieces(posX, posY, original);
+					blackWin=mainBoard.checkKing();
+					whiteWin=mainBoard.checkWin();
+
+					// if(!blackWin&&!whiteWin&&whiteTurn){
+					// 	myBot.takeTurn();
+					// }
+
+					numMoves++;
+					p("moveNumber: "+numMoves);
 				}
 			}
 		}
 		myGUI.repaint();
 	}
 
+	public void simulateMove(Moves thisMove, Board tempBoard){ //if left button clicked
+		tempBoard.set(thisMove.endX,thisMove.endY,thisMove.piece);
+		tempBoard.set(thisMove.startX,thisMove.startY,'e');
+		tempBoard.takePieces(thisMove.endX,thisMove.endY,thisMove.piece);
+	}
+
 	public void undo(){
-		if(board.turnNum>0){
+		if(mainBoard.turnNum>0){
 			whiteTurn = !whiteTurn;
-			board.loadHistory();
+			mainBoard.loadHistory();
 			myGUI.repaint();
 		}
 	}
@@ -78,7 +96,7 @@ class Tafl {
 			savefile.println(whiteTurn?"White's Turn":"Black's Turn");
 			for (int j=0; j<boardHeight; j++) {
 				for (int i=0; i<boardWidth; i++) {
-					savefile.print(board.get(i,j));
+					savefile.print(mainBoard.get(i,j));
 				}
 			}
 			savefile.flush();
@@ -94,7 +112,7 @@ class Tafl {
 			String turn = br.readLine();
 	        String line = br.readLine();
 	        for (int i=0; i<line.length(); i++) {
-	        	board.set(i%boardWidth, i/boardHeight, line.charAt(i));
+	        	mainBoard.set(i%boardWidth, i/boardHeight, line.charAt(i));
 			}
 			p(turn);
 			whiteTurn = (turn.equals("White's Turn"));
@@ -103,6 +121,7 @@ class Tafl {
    			p("error reading file");
    		}
 	}
+	public static void s(int x){try{Thread.sleep(x);}catch(Exception e){}}
 	public static void p(Object o){System.out.println(o);}
 	public static int r(int x){return (int)(Math.random()*x);}
 	public static void main(String args[]){new Tafl();}
