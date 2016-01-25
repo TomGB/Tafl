@@ -58,9 +58,9 @@ class Tafl {
 					blackWin=mainBoard.checkKing();
 					whiteWin=mainBoard.checkWin();
 
-					// if(!blackWin&&!whiteWin&&whiteTurn){
-					// 	myBot.takeTurn();
-					// }
+					if(!blackWin&&!whiteWin&&whiteTurn){
+						myBot.takeTurn();
+					}
 
 					numMoves++;
 					p("moveNumber: "+numMoves);
