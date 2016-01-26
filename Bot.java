@@ -42,6 +42,8 @@ class Bot {
 
 		p("Possible Moves: "+possibleMoves.size());
 
+		// need to seperate this for loop into a generic algorithem that works for black and white to rate the board
+
 		for (int moveNum=0; moveNum<possibleMoves.size(); moveNum++) {
 			Moves thisMove = possibleMoves.get(moveNum);
 			Board tempBoard = new Board(tafl.boardWidth, tafl.boardHeight, tafl.mainBoard.pieces);
@@ -122,6 +124,7 @@ class Bot {
 				}
 			}
 			// p("checking number of pieces left done \n\n");
+
 		}
 
 		// p("selecting move");
