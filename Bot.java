@@ -44,8 +44,50 @@ class Bot {
 
 		// need to seperate this for loop into a generic algorithem that works for black and white to rate the board
 
-		for (int moveNum=0; moveNum<possibleMoves.size(); moveNum++) {
-			Moves thisMove = possibleMoves.get(moveNum);
+		possibleMoves = evaluateMoves(possibleMoves);
+
+		Collections.sort(possibleMoves, new Comparator<Moves>() {
+	        @Override public int compare(Moves m1, Moves m2) {
+	            return m2.score - m1.score; // Ascending
+	        }
+
+	    });
+
+		int bestScore = possibleMoves.get(0).score;
+
+		int numberToSelectFrom;
+
+		for (int i=0; i<possibleMoves.size(); i++) {
+			p("Score: "+possibleMoves.get(i).score);
+		}
+
+		for (numberToSelectFrom = 0; numberToSelectFrom < possibleMoves.size() && possibleMoves.get(numberToSelectFrom).score == bestScore; numberToSelectFrom++) {
+
+		}
+
+		Moves selectedMove = possibleMoves.get(r(numberToSelectFrom));
+
+		// p("selecting move done \n\n");
+
+		tafl.myGUI.repaint();
+		// p("before sleep");
+		// s(500);
+		// p("after sleep");
+		tafl.update(selectedMove.startX,selectedMove.startY);
+		tafl.myGUI.repaint();
+		// s(500);
+		tafl.update(selectedMove.endX,selectedMove.endY);
+
+		hilightX = selectedMove.endX;
+		hilightY = selectedMove.endY;
+		tafl.myGUI.repaint();
+
+		p("AI Happy");
+	}
+
+	public ArrayList<Moves> evaluateMoves(ArrayList<Moves> evaluateMoves){
+		for (int moveNum=0; moveNum<evaluateMoves.size(); moveNum++) {
+			Moves thisMove = evaluateMoves.get(moveNum);
 			Board tempBoard = new Board(tafl.boardWidth, tafl.boardHeight, tafl.mainBoard.pieces);
 			tafl.simulateMove(thisMove, tempBoard);
 
@@ -127,45 +169,9 @@ class Bot {
 
 		}
 
+		return evaluateMoves;
+
 		// p("selecting move");
-
-		Collections.sort(possibleMoves, new Comparator<Moves>() {
-	        @Override public int compare(Moves m1, Moves m2) {
-	            return m2.score - m1.score; // Ascending
-	        }
-
-	    });
-
-		int bestScore = possibleMoves.get(0).score;
-
-		int numberToSelectFrom;
-
-		for (int i=0; i<possibleMoves.size(); i++) {
-			p("Score: "+possibleMoves.get(i).score);
-		}
-
-		for (numberToSelectFrom = 0; numberToSelectFrom < possibleMoves.size() && possibleMoves.get(numberToSelectFrom).score == bestScore; numberToSelectFrom++) {
-
-		}
-
-		Moves selectedMove = possibleMoves.get(r(numberToSelectFrom));
-
-		// p("selecting move done \n\n");
-
-		tafl.myGUI.repaint();
-		// p("before sleep");
-		// s(500);
-		// p("after sleep");
-		tafl.update(selectedMove.startX,selectedMove.startY);
-		tafl.myGUI.repaint();
-		// s(500);
-		tafl.update(selectedMove.endX,selectedMove.endY);
-
-		hilightX = selectedMove.endX;
-		hilightY = selectedMove.endY;
-		tafl.myGUI.repaint();
-
-		p("AI Happy");
 	}
 
 	public static void s(int x){try{Thread.sleep(x);}catch(Exception e){}}
