@@ -25,26 +25,18 @@ class Bot {
 		//for each possible move that the piece can make
 		//record to a list of possible moves
 
-		for (int i=0; i<tafl.boardWidth; i++) {
-			for (int j=0; j<tafl.boardHeight; j++) {
-				if(tafl.mainBoard.isWhite(i,j)){
-					char tempPiece = tafl.mainBoard.get(i,j);
-					for (int k=0; k<tafl.boardWidth; k++) {
-						for (int l=0; l<tafl.boardHeight; l++) {
-							if(tafl.mainBoard.validMove(i, j, k, l, tempPiece)){ //move piece
-								possibleMoves.add(new Moves(i,j,k,l, tempPiece));
-							}
-						}
-					}
-				}
-			}
-		}
+		
 
 		p("Possible Moves: "+possibleMoves.size());
 
 		// need to seperate this for loop into a generic algorithem that works for black and white to rate the board
+		// 
+		
+		Board tempBoard = new Board(tafl.boardWidth, tafl.boardHeight, tafl.mainBoard.pieces);
 
-		possibleMoves = evaluateMoves(possibleMoves);
+		possibleMoves = getPossibleMoves(tafl.mainBoard);
+
+		possibleMoves = evaluateMoves(possibleMoves, tempBoard);
 
 		Collections.sort(possibleMoves, new Comparator<Moves>() {
 	        @Override public int compare(Moves m1, Moves m2) {
@@ -85,28 +77,49 @@ class Bot {
 		p("AI Happy");
 	}
 
-	public ArrayList<Moves> evaluateMoves(ArrayList<Moves> evaluateMoves){
+	public ArrayList<Moves> getPossibleMoves(Board testBoard){
+
+		ArrayList<Moves> tempMoves = new ArrayList<Moves>();
+
+		for (int i=0; i<tafl.boardWidth; i++) {
+			for (int j=0; j<tafl.boardHeight; j++) {
+				if(testBoard.isWhite(i,j)){
+					char tempPiece = testBoard.get(i,j);
+					for (int k=0; k<tafl.boardWidth; k++) {
+						for (int l=0; l<tafl.boardHeight; l++) {
+							if(testBoard.validMove(i, j, k, l, tempPiece)){ //move piece
+								tempMoves.add(new Moves(i,j,k,l, tempPiece));
+							}
+						}
+					}
+				}
+			}
+		}
+
+		return tempMoves;
+	}
+
+	public ArrayList<Moves> evaluateMoves(ArrayList<Moves> evaluateMoves, Board testBoard){
 		for (int moveNum=0; moveNum<evaluateMoves.size(); moveNum++) {
 			Moves thisMove = evaluateMoves.get(moveNum);
-			Board tempBoard = new Board(tafl.boardWidth, tafl.boardHeight, tafl.mainBoard.pieces);
-			tafl.simulateMove(thisMove, tempBoard);
+			tafl.simulateMove(thisMove, testBoard);
 
-			if(thisMove.piece=='k'&&tempBoard.checkWin()){
+			if(thisMove.piece=='k'&&testBoard.checkWin()){
 				thisMove.score = 100;
 				// p("this move won the game");
 			}else if(thisMove.piece=='k'){
 				// p("checking king movements");
 				int escapes = 0;
-				if(tempBoard.validMove(thisMove.endX,thisMove.endY,0,0,'k')){
+				if(testBoard.validMove(thisMove.endX,thisMove.endY,0,0,'k')){
 					escapes+=1;
 				}
-				if(tempBoard.validMove(thisMove.endX,thisMove.endY,0,tafl.boardHeight-1,'k')){
+				if(testBoard.validMove(thisMove.endX,thisMove.endY,0,tafl.boardHeight-1,'k')){
 					escapes+=1;
 				}
-				if(tempBoard.validMove(thisMove.endX,thisMove.endY,tafl.boardWidth-1,0,'k')){
+				if(testBoard.validMove(thisMove.endX,thisMove.endY,tafl.boardWidth-1,0,'k')){
 					escapes+=1;
 				}
-				if(tempBoard.validMove(thisMove.endX,thisMove.endY,tafl.boardWidth-1,tafl.boardHeight-1,'k')){
+				if(testBoard.validMove(thisMove.endX,thisMove.endY,tafl.boardWidth-1,tafl.boardHeight-1,'k')){
 					escapes+=1;
 				}
 
@@ -123,18 +136,18 @@ class Bot {
 			// p("checking enemies around king");
 			for (int i=0; i<tafl.boardWidth; i++) {
 				for (int j=0; j<tafl.boardHeight; j++) {
-					if(tempBoard.isKing(i,j)){
+					if(testBoard.isKing(i,j)){
 						int enemiesAround = 0;
-						if(tempBoard.isBlack(i-1,j)){
+						if(testBoard.isBlack(i-1,j)){
 							enemiesAround++;
 						}
-						if(tempBoard.isBlack(i+1,j)){
+						if(testBoard.isBlack(i+1,j)){
 							enemiesAround++;
 						}
-						if(tempBoard.isBlack(i,j-1)){
+						if(testBoard.isBlack(i,j-1)){
 							enemiesAround++;
 						}
-						if(tempBoard.isBlack(i,j+1)){
+						if(testBoard.isBlack(i,j+1)){
 							enemiesAround++;
 						}
 
@@ -154,9 +167,9 @@ class Bot {
 				for (int j=0; j<tafl.boardHeight; j++) {
 					int numWhite = 0;
 					int numBlack = 0;
-					if(tempBoard.isWhite(i,j)){
+					if(testBoard.isWhite(i,j)){
 						numWhite++;
-					}else if(tempBoard.isBlack(i,j)){
+					}else if(testBoard.isBlack(i,j)){
 						numBlack++;
 					}
 					// p("num White: "+numWhite);
