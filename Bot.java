@@ -24,6 +24,14 @@ class Bot {
 		//for each piece on the tafl.mainBoard
 		//for each possible move that the piece can make
 		//record to a list of possible moves
+		//
+		// AI logic
+		// 
+		// 	for each move white can make,
+		//		for each move black can make,
+		// 			find most optimal move for black,
+		// 	order white moves into most optimal based on the optimal black moves.
+		// 		
 
 		
 
