@@ -30,6 +30,7 @@ class Bot {
 		// 	for each move white can make,
 		//		for each move black can make,
 		// 			find most optimal move for black,
+		// 			and take that move, then use that score, pass it up the tree for white
 		// 	order white moves into most optimal based on the optimal black moves.
 		// 		
 
