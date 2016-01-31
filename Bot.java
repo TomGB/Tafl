@@ -32,7 +32,7 @@ class Bot {
 		// 			find most optimal move for black,
 		// 			and take that move, then use that score, pass it up the tree for white
 		// 	order white moves into most optimal based on the optimal black moves.
-		// 		
+		// 	need to test this out on Tuesday
 
 		
 
