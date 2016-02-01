@@ -41,11 +41,41 @@ class Bot {
 		// need to seperate this for loop into a generic algorithem that works for black and white to rate the board
 		// 
 		
-		Board tempBoard = new Board(tafl.boardWidth, tafl.boardHeight, tafl.mainBoard.pieces);
+		
 
-		possibleMoves = getPossibleMoves(tafl.mainBoard);
+		possibleMoves = getPossibleMoves(tafl.mainBoard, 'w');
 
-		possibleMoves = evaluateMoves(possibleMoves, tempBoard);
+		for (int i=0; i<possibleMoves.size(); i++) {
+			Board tempBoard = new Board(tafl.boardWidth, tafl.boardHeight, tafl.mainBoard.pieces);
+			tafl.simulateMove(possibleMoves.get(i),tempBoard);
+			ArrayList<Moves> possibleReturnMoves = new ArrayList<Moves>();
+			possibleReturnMoves = getPossibleMoves(tempBoard, 'w');
+
+			possibleReturnMoves = evaluateMoves(possibleMoves, tempBoard);
+
+			Collections.sort(possibleReturnMoves, new Comparator<Moves>() {
+		        @Override public int compare(Moves m1, Moves m2) {
+		            return m2.score - m1.score; // Ascending
+		        }
+		    });
+
+		    for (int j=0; j<possibleMoves.size();j++) {
+				p("Score: "+possibleReturnMoves.get(j).score);
+			}
+
+		    int worstScore = possibleMoves.get(possibleMoves.size()-1).score;
+
+		 //    int numberToSelectFrom;
+		 //    for (numberToSelectFrom = 0; numberToSelectFrom < possibleMoves.size() && possibleMoves.get(possibleMoves.size()-1-numberToSelectFrom).score == worstScore; numberToSelectFrom++) {
+
+			// }
+
+			// Moves bestBlackMove = possibleMoves.get(possibleMoves.size()-1-r(numberToSelectFrom));
+
+			possibleMoves.get(i).score = worstScore;
+		}
+
+		// possibleMoves = evaluateMoves(possibleMoves, tempBoard);
 
 		Collections.sort(possibleMoves, new Comparator<Moves>() {
 	        @Override public int compare(Moves m1, Moves m2) {
@@ -86,13 +116,13 @@ class Bot {
 		p("AI Happy");
 	}
 
-	public ArrayList<Moves> getPossibleMoves(Board testBoard){
+	public ArrayList<Moves> getPossibleMoves(Board testBoard, char colour){
 
 		ArrayList<Moves> tempMoves = new ArrayList<Moves>();
 
 		for (int i=0; i<tafl.boardWidth; i++) {
 			for (int j=0; j<tafl.boardHeight; j++) {
-				if(testBoard.isWhite(i,j)){
+				if((colour == 'w' && testBoard.isWhite(i,j)) || (colour == 'b' && testBoard.isBlack(i,j))){
 					char tempPiece = testBoard.get(i,j);
 					for (int k=0; k<tafl.boardWidth; k++) {
 						for (int l=0; l<tafl.boardHeight; l++) {
@@ -132,7 +162,7 @@ class Bot {
 					escapes+=1;
 				}
 
-				p("escapes: "+escapes);
+				// p("escapes: "+escapes);
 
 				if(escapes>1){
 					thisMove.score = 90;
