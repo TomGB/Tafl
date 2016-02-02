@@ -39,7 +39,7 @@ class Bot {
 		p("Possible Moves: "+possibleMoves.size());
 
 		// need to seperate this for loop into a generic algorithem that works for black and white to rate the board
-		// 
+		// this don't work how I want it to
 		
 		
 
