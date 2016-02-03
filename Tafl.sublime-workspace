@@ -4,6 +4,18 @@
 		"selected_items":
 		[
 			[
+				"temp",
+				"tempBoard"
+			],
+			[
+				"test",
+				"testBoard"
+			],
+			[
+				"main",
+				"mainBoard"
+			],
+			[
 				"font-s",
 				"font-size"
 			],
@@ -110,10 +122,6 @@
 			[
 				"chess",
 				"chessPieces"
-			],
-			[
-				"temp",
-				"tempPiece"
 			],
 			[
 				"get",
@@ -491,30 +499,6 @@
 	},
 	"buffers":
 	[
-		{
-			"file": "Board.java",
-			"settings":
-			{
-				"buffer_size": 5537,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "Tafl.java",
-			"settings":
-			{
-				"buffer_size": 3295,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "Bot.java",
-			"settings":
-			{
-				"buffer_size": 4424,
-				"line_ending": "Unix"
-			}
-		}
 	],
 	"build_system": "",
 	"build_system_choices":
@@ -602,6 +586,21 @@
 	],
 	"file_history":
 	[
+		"/Applications/XAMPP/xamppfiles/htdocs/config.ini",
+		"/Applications/XAMPP/xamppfiles/htdocs/index.php",
+		"/Applications/Pando/xamppfiles/htdocs 2/db/categorylink.sql",
+		"/Users/tgbmac/Library/Caches/Cleanup At Startup/Transmit/DCA88E67-20D6-4E14-9693-FEDE04B8387A/index.html",
+		"/Applications/XAMPP/xamppfiles/htdocs/laravel/pando/database/migrations/2015_05_05_165615_add_locations.php",
+		"/Users/tgbmac/Documents/my_projects/Tafl/Bot.java",
+		"/Users/tgbmac/Documents/my_projects/Tafl/Tafl.java",
+		"/Users/tgbmac/Documents/my_projects/Tafl/Board.java",
+		"/Applications/XAMPP/xamppfiles/htdocs/laravel/pando/database/migrations/.gitkeep",
+		"/Applications/XAMPP/xamppfiles/htdocs/laravel/pando/database/.gitignore",
+		"/Applications/XAMPP/xamppfiles/htdocs/laravel/pando/.gitignore",
+		"/Users/tgbmac/Library/Caches/Cleanup At Startup/Transmit/B01143B4-5707-4FCC-B374-7E273CE64EDC/.gitignore",
+		"/Users/tgbmac/Library/Caches/Cleanup At Startup/Transmit/5F9A412A-E547-40FB-97D9-049CE0AE47EB/style.css",
+		"/Users/tgbmac/Library/Caches/Cleanup At Startup/Transmit/C10C23AF-37BA-446E-9486-D784F09CC875/header.php",
+		"/Users/tgbmac/Documents/my_projects/Tafl/README.md",
 		"/Users/tgbmac/Documents/Projects/Tafl/Tafl.java",
 		"/Users/tgbmac/Documents/Projects/Tafl/UserInteraction.java",
 		"/Users/tgbmac/Documents/Projects/Tafl/Board.java",
@@ -714,22 +713,7 @@
 		"/Applications/XAMPP/xamppfiles/htdocs v4/MotorDeal/app/controllers/VehicleController.php",
 		"/Users/tgbmac/Library/Caches/Cleanup At Startup/Transmit/5BB0EAE5-969D-4438-88F9-D82D476C438D/cardGame.js",
 		"/Users/tgbmac/Library/Caches/Cleanup At Startup/Transmit/B5A52AD5-B52F-4750-8B08-99F1CBF8DE86/.htaccess",
-		"/Users/tgbmac/Library/Caches/Cleanup At Startup/Transmit/8BF6D89C-B0E6-4FB7-B23D-F2EDB9AE67EB/aboutus.html",
-		"/Users/tgbmac/Library/Caches/Cleanup At Startup/Transmit/1E5602BF-75D6-48A2-916A-AB60051534B2/home.html",
-		"/Users/tgbmac/Library/Caches/Cleanup At Startup/Transmit/86CAB541-53A6-489F-A9C5-4E70C1792805/routes.ini",
-		"/Users/tgbmac/Desktop/myappforyou/www/css/index.css",
-		"/Users/tgbmac/Library/Caches/Cleanup At Startup/Transmit/4CA4781E-A8C1-4086-A0C1-000C9A7EAE99/getcardgame.php",
-		"/Users/tgbmac/Library/Caches/Cleanup At Startup/Transmit/0ADA4359-E330-4E5D-8311-B09E8462659A/HomeController.php",
-		"/Users/tgbmac/Library/Caches/Cleanup At Startup/Transmit/A7C4C64C-AB98-4EAD-A833-80E73F23EA9C/customise2.html",
-		"/Users/tgbmac/Library/Caches/Cleanup At Startup/Transmit/F77F52E8-AEA6-4E0C-9D7E-B170C71C64ED/customise.js",
-		"/Users/tgbmac/Library/Caches/Cleanup At Startup/Transmit/566803ED-A54C-4231-8205-2D9B1FB187DD/customise.html",
-		"/Users/tgbmac/Library/Caches/Cleanup At Startup/Transmit/C02ADAC8-66D8-4BFA-AC04-F2B84F49E67A/head.html",
-		"/Users/tgbmac/Downloads/tmux-2.0/TODO",
-		"/Users/tgbmac/Library/Caches/Cleanup At Startup/Transmit/FB7D1301-162A-4B4E-B1A8-83AA634C964E/customise.js",
-		"/Users/tgbmac/Desktop/quizGame.js",
-		"/Users/tgbmac/Desktop/cardGame.js",
-		"/Users/tgbmac/Library/Caches/Cleanup At Startup/Transmit/4B2B673C-1538-478C-94B2-06C8F011DD6F/HomeController.php",
-		"/Users/tgbmac/Library/Caches/Cleanup At Startup/Transmit/176F5A2E-87B2-4F0A-AEAA-E3C9584DACFD/.htaccess"
+		"/Users/tgbmac/Library/Caches/Cleanup At Startup/Transmit/8BF6D89C-B0E6-4FB7-B23D-F2EDB9AE67EB/aboutus.html"
 	],
 	"find":
 	{
@@ -745,9 +729,21 @@
 	},
 	"find_state":
 	{
-		"case_sensitive": false,
+		"case_sensitive": true,
 		"find_history":
 		[
+			"i",
+			"evaluateMoves",
+			"getPossibleMoves",
+			"2016",
+			"htdocs",
+			"possibleMoves",
+			"tafl.mainBoard",
+			"tempBoard",
+			"thisMove",
+			"getPossibleMoves",
+			"possibleMoves",
+			"evaluateBoard",
 			"appicon",
 			"video",
 			"transition",
@@ -863,19 +859,7 @@
 			"canvasVar",
 			"buttonClicked",
 			"save_button",
-			"drawTouch",
-			"uhohSound",
-			"audio",
-			"uhohSound",
-			"uhoh",
-			"crashsound",
-			"crash",
-			"startRaceSound",
-			"Audio",
-			"audio",
-			"Audio",
-			"crash",
-			"play"
+			"drawTouch"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -888,279 +872,14 @@
 		"reverse": false,
 		"show_context": true,
 		"use_buffer2": true,
-		"whole_word": false,
+		"whole_word": true,
 		"wrap": true
 	},
 	"groups":
 	[
 		{
-			"selected": 2,
 			"sheets":
 			[
-				{
-					"buffer": 0,
-					"file": "Board.java",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 5537,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"BracketHighlighterBusy": false,
-							"bh_regions":
-							[
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_square_content",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_default_content",
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_angle_content",
-								"bh_c_define",
-								"bh_c_define_center",
-								"bh_c_define_open",
-								"bh_c_define_close",
-								"bh_c_define_content",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close",
-								"bh_single_quote_content",
-								"bh_regex",
-								"bh_regex_center",
-								"bh_regex_open",
-								"bh_regex_close",
-								"bh_regex_content",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
-								"bh_round_content",
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_double_quote_content",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
-								"bh_tag_content",
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
-								"bh_curly_content",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_unmatched_content"
-							],
-							"syntax": "Packages/Java/Java.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "Tafl.java",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 3295,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1627,
-								1627
-							]
-						],
-						"settings":
-						{
-							"BracketHighlighterBusy": false,
-							"bh_regions":
-							[
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_square_content",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_default_content",
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_angle_content",
-								"bh_c_define",
-								"bh_c_define_center",
-								"bh_c_define_open",
-								"bh_c_define_close",
-								"bh_c_define_content",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close",
-								"bh_single_quote_content",
-								"bh_regex",
-								"bh_regex_center",
-								"bh_regex_open",
-								"bh_regex_close",
-								"bh_regex_content",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
-								"bh_round_content",
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_double_quote_content",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
-								"bh_tag_content",
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
-								"bh_curly_content",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_unmatched_content"
-							],
-							"syntax": "Packages/Java/Java.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 240.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "Bot.java",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 4424,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1108,
-								1108
-							]
-						],
-						"settings":
-						{
-							"BracketHighlighterBusy": false,
-							"bh_regions":
-							[
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_square_content",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_default_content",
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_angle_content",
-								"bh_c_define",
-								"bh_c_define_center",
-								"bh_c_define_open",
-								"bh_c_define_close",
-								"bh_c_define_content",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close",
-								"bh_single_quote_content",
-								"bh_regex",
-								"bh_regex_center",
-								"bh_regex_open",
-								"bh_regex_close",
-								"bh_regex_content",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
-								"bh_round_content",
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_double_quote_content",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
-								"bh_tag_content",
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
-								"bh_curly_content",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_unmatched_content"
-							],
-							"syntax": "Packages/Java/Java.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 242.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				}
 			]
 		}
 	],
