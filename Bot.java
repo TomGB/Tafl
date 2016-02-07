@@ -32,8 +32,6 @@ class Bot {
 		// 			find most optimal move for black,
 		// 			and take that move, then use that score, pass it up the tree for white
 		// 	order white moves into most optimal based on the optimal black moves.
-		// 	need to test this out on Tuesday
-		// 	working on sky thingy
 
 		
 
@@ -50,9 +48,9 @@ class Bot {
 			Board tempBoard = new Board(tafl.boardWidth, tafl.boardHeight, tafl.mainBoard.pieces);
 			tafl.simulateMove(possibleMoves.get(i),tempBoard);
 			ArrayList<Moves> possibleReturnMoves = new ArrayList<Moves>();
-			possibleReturnMoves = getPossibleMoves(tempBoard, 'w');
+			possibleReturnMoves = getPossibleMoves(tempBoard, 'b');
 
-			possibleReturnMoves = evaluateMoves(possibleMoves, tempBoard);
+			possibleReturnMoves = evaluateMoves(possibleReturnMoves, tempBoard);
 
 			Collections.sort(possibleReturnMoves, new Comparator<Moves>() {
 		        @Override public int compare(Moves m1, Moves m2) {
@@ -60,11 +58,11 @@ class Bot {
 		        }
 		    });
 
-		    for (int j=0; j<possibleMoves.size();j++) {
+		    for (int j=0; j<possibleReturnMoves.size();j++) {
 				p("Score: "+possibleReturnMoves.get(j).score);
 			}
 
-		    int worstScore = possibleMoves.get(possibleMoves.size()-1).score;
+		    int worstScore = possibleReturnMoves.get(possibleReturnMoves.size()-1).score;
 
 		 //    int numberToSelectFrom;
 		 //    for (numberToSelectFrom = 0; numberToSelectFrom < possibleMoves.size() && possibleMoves.get(possibleMoves.size()-1-numberToSelectFrom).score == worstScore; numberToSelectFrom++) {
