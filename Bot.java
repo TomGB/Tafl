@@ -137,9 +137,10 @@ class Bot {
 		return tempMoves;
 	}
 
-	public ArrayList<Moves> evaluateMoves(ArrayList<Moves> evaluateMoves, Board testBoard){
-		for (int moveNum=0; moveNum<evaluateMoves.size(); moveNum++) {
-			Moves thisMove = evaluateMoves.get(moveNum);
+	public ArrayList<Moves> evaluateMoves(ArrayList<Moves> movesToEvaluate, Board inputBoard){
+		for (int moveNum=0; moveNum<movesToEvaluate.size(); moveNum++) {
+			Board testBoard = new Board(tafl.boardWidth, tafl.boardHeight, inputBoard.pieces);
+			Moves thisMove = movesToEvaluate.get(moveNum);
 			tafl.simulateMove(thisMove, testBoard);
 
 			if(thisMove.piece=='k'&&testBoard.checkWin()){
@@ -220,7 +221,7 @@ class Bot {
 
 		}
 
-		return evaluateMoves;
+		return movesToEvaluate;
 
 		// p("selecting move");
 	}
