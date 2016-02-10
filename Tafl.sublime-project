@@ -3,6 +3,9 @@
 	[
 		{
 			"path": "."
+		},
+		{
+			"path": "/Volumes/Euro Truck Simulator 2/Euro Truck Simulator 2.app/Contents/Resources/English.lproj/MainMenu.nib"
 		}
 	]
 }

@@ -33,8 +33,7 @@ class Bot {
 		// 			and take that move, then use that score, pass it up the tree for white
 		// 	order white moves into most optimal based on the optimal black moves.
 		// 	
-		// 	found a problem with the white evaluation logic. It doesn't make good moves with the King.
-
+		// 	Metric is not perfect
 		
 
 		p("Possible Moves: "+possibleMoves.size());
@@ -60,9 +59,9 @@ class Bot {
 		        }
 		    });
 
-		    for (int j=0; j<possibleReturnMoves.size();j++) {
-				p("Score: "+possibleReturnMoves.get(j).score);
-			}
+		 //    for (int j=0; j<possibleReturnMoves.size();j++) {
+			// 	p("Score: "+possibleReturnMoves.get(j).score);
+			// }
 
 		    int worstScore = possibleReturnMoves.get(possibleReturnMoves.size()-1).score;
 
@@ -89,9 +88,9 @@ class Bot {
 
 		int numberToSelectFrom;
 
-		for (int i=0; i<possibleMoves.size(); i++) {
-			p("Score: "+possibleMoves.get(i).score);
-		}
+		// for (int i=0; i<possibleMoves.size(); i++) {
+		// 	p("Score: "+possibleMoves.get(i).score);
+		// }
 
 		for (numberToSelectFrom = 0; numberToSelectFrom < possibleMoves.size() && possibleMoves.get(numberToSelectFrom).score == bestScore; numberToSelectFrom++) {
 
@@ -145,22 +144,40 @@ class Bot {
 			Moves thisMove = movesToEvaluate.get(moveNum);
 			tafl.simulateMove(thisMove, testBoard);
 
-			if(thisMove.piece=='k'&&testBoard.checkWin()){
+			if(testBoard.checkWin()){
 				thisMove.score = 100;
 				// p("this move won the game");
-			}else if(thisMove.piece=='k'){
+			}else{
+
+				// find king piece
+				// 
+				
+				int king_x = 0;
+				int king_y = 0;
+
+				for (int i=0; i<8; i++) {
+					for (int j=0; j<8; j++) {
+						if(testBoard.get(i,j)=='k'){
+							king_x = i;
+							king_y = j;
+							i = 9;
+							j = 9;
+						}
+					}
+				}
+
 				// p("checking king movements");
 				int escapes = 0;
-				if(testBoard.validMove(thisMove.endX,thisMove.endY,0,0,'k')){
+				if(testBoard.validMove(king_x,king_y,0,0,'k')){
 					escapes+=1;
 				}
-				if(testBoard.validMove(thisMove.endX,thisMove.endY,0,tafl.boardHeight-1,'k')){
+				if(testBoard.validMove(king_x,king_y,0,tafl.boardHeight-1,'k')){
 					escapes+=1;
 				}
-				if(testBoard.validMove(thisMove.endX,thisMove.endY,tafl.boardWidth-1,0,'k')){
+				if(testBoard.validMove(king_x,king_y,tafl.boardWidth-1,0,'k')){
 					escapes+=1;
 				}
-				if(testBoard.validMove(thisMove.endX,thisMove.endY,tafl.boardWidth-1,tafl.boardHeight-1,'k')){
+				if(testBoard.validMove(king_x,king_y,tafl.boardWidth-1,tafl.boardHeight-1,'k')){
 					escapes+=1;
 				}
 
