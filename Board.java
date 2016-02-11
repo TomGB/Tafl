@@ -169,7 +169,7 @@ class Board {
 	public boolean isFriend(int x, int y, char piece){
 		return ((get(x,y)=='b'&&piece=='b')||((get(x,y)=='w'||get(x,y)=='k')&&(piece=='w'||piece=='k')));
 	}
-	public boolean checkKing(){
+	public boolean checkBlackWin(){
 		for (int i=0; i<width; i++) {
 			for (int j=0; j<height; j++) {
 				if(get(i,j)=='k'){
@@ -190,7 +190,7 @@ class Board {
 		}
 		return true;
 	}
-	public boolean checkWin(){
+	public boolean checkWhiteWin(){
 		for (int i=0; i<width; i++) {
 			for (int j=0; j<height; j++) {
 				if(get(i,j)=='k'){

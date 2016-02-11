@@ -19,8 +19,6 @@ class Bot {
 	public void takeTurn(){
 		p("AI's Turn");
 
-		possibleMoves = new ArrayList<Moves>();
-
 		//for each piece on the tafl.mainBoard
 		//for each possible move that the piece can make
 		//record to a list of possible moves
@@ -32,50 +30,31 @@ class Bot {
 		// 			find most optimal move for black,
 		// 			and take that move, then use that score, pass it up the tree for white
 		// 	order white moves into most optimal based on the optimal black moves.
-		// 	
-		// 	Metric is not perfect
-		
 
-		p("Possible Moves: "+possibleMoves.size());
+		Moves selectedMove = getBestWhiteMove(tafl.mainBoard);
 
-		// need to seperate this for loop into a generic algorithem that works for black and white to rate the board
-		// this don't work how I want it to
-		
-		
+		tafl.myGUI.repaint();
+		tafl.update(selectedMove.startX,selectedMove.startY);
+		tafl.myGUI.repaint();
+		tafl.update(selectedMove.endX,selectedMove.endY);
 
-		possibleMoves = getPossibleMoves(tafl.mainBoard, 'w');
+		hilightX = selectedMove.endX;
+		hilightY = selectedMove.endY;
+		tafl.myGUI.repaint();
+
+		p("AI Happy");
+	}
+
+	public Moves getBestWhiteMove(Board testBoard){
+		possibleMoves = new ArrayList<Moves>();
+
+		possibleMoves = getPossibleMoves(testBoard, 'w');
 
 		for (int i=0; i<possibleMoves.size(); i++) {
-			Board tempBoard = new Board(tafl.boardWidth, tafl.boardHeight, tafl.mainBoard.pieces);
+			Board tempBoard = new Board(tafl.boardWidth, tafl.boardHeight, testBoard.pieces);
 			tafl.simulateMove(possibleMoves.get(i),tempBoard);
-			ArrayList<Moves> possibleReturnMoves = new ArrayList<Moves>();
-			possibleReturnMoves = getPossibleMoves(tempBoard, 'b');
-
-			possibleReturnMoves = evaluateMoves(possibleReturnMoves, tempBoard);
-
-			Collections.sort(possibleReturnMoves, new Comparator<Moves>() {
-		        @Override public int compare(Moves m1, Moves m2) {
-		            return m2.score - m1.score; // Ascending
-		        }
-		    });
-
-		 //    for (int j=0; j<possibleReturnMoves.size();j++) {
-			// 	p("Score: "+possibleReturnMoves.get(j).score);
-			// }
-
-		    int worstScore = possibleReturnMoves.get(possibleReturnMoves.size()-1).score;
-
-		 //    int numberToSelectFrom;
-		 //    for (numberToSelectFrom = 0; numberToSelectFrom < possibleMoves.size() && possibleMoves.get(possibleMoves.size()-1-numberToSelectFrom).score == worstScore; numberToSelectFrom++) {
-
-			// }
-
-			// Moves bestBlackMove = possibleMoves.get(possibleMoves.size()-1-r(numberToSelectFrom));
-
-			possibleMoves.get(i).score = worstScore;
+			possibleMoves.get(i).score = getWorstBlackMove(tempBoard).score ;
 		}
-
-		// possibleMoves = evaluateMoves(possibleMoves, tempBoard);
 
 		Collections.sort(possibleMoves, new Comparator<Moves>() {
 	        @Override public int compare(Moves m1, Moves m2) {
@@ -86,34 +65,31 @@ class Bot {
 
 		int bestScore = possibleMoves.get(0).score;
 
-		int numberToSelectFrom;
+		int numberToSelectFrom = 0;
 
-		// for (int i=0; i<possibleMoves.size(); i++) {
-		// 	p("Score: "+possibleMoves.get(i).score);
-		// }
-
-		for (numberToSelectFrom = 0; numberToSelectFrom < possibleMoves.size() && possibleMoves.get(numberToSelectFrom).score == bestScore; numberToSelectFrom++) {
-
+		while(possibleMoves.get(numberToSelectFrom).score == bestScore && numberToSelectFrom < possibleMoves.size()){
+			numberToSelectFrom++;
 		}
 
-		Moves selectedMove = possibleMoves.get(r(numberToSelectFrom));
+		return possibleMoves.get(r(numberToSelectFrom));
 
-		// p("selecting move done \n\n");
+	}
 
-		tafl.myGUI.repaint();
-		// p("before sleep");
-		// s(500);
-		// p("after sleep");
-		tafl.update(selectedMove.startX,selectedMove.startY);
-		tafl.myGUI.repaint();
-		// s(500);
-		tafl.update(selectedMove.endX,selectedMove.endY);
+	public Moves getWorstBlackMove(Board tempBoard){
+		ArrayList<Moves> possibleReturnMoves = new ArrayList<Moves>();
+		possibleReturnMoves = getPossibleMoves(tempBoard, 'b');
 
-		hilightX = selectedMove.endX;
-		hilightY = selectedMove.endY;
-		tafl.myGUI.repaint();
+		possibleReturnMoves = evaluateMoves(possibleReturnMoves, tempBoard);
 
-		p("AI Happy");
+		Collections.sort(possibleReturnMoves, new Comparator<Moves>() {
+	        @Override public int compare(Moves m1, Moves m2) {
+	            return m2.score - m1.score; // Ascending
+	        }
+	    });
+
+	    Moves worstMove = possibleReturnMoves.get(possibleReturnMoves.size()-1);
+
+	    return worstMove;
 	}
 
 	public ArrayList<Moves> getPossibleMoves(Board testBoard, char colour){
@@ -144,9 +120,11 @@ class Bot {
 			Moves thisMove = movesToEvaluate.get(moveNum);
 			tafl.simulateMove(thisMove, testBoard);
 
-			if(testBoard.checkWin()){
+			if(testBoard.checkWhiteWin()){
 				thisMove.score = 100;
 				// p("this move won the game");
+			}else if(testBoard.checkBlackWin()){
+				thisMove.score = -100;
 			}else{
 
 				// find king piece
@@ -190,36 +168,6 @@ class Bot {
 				}
 				// p("king movements done\n\n");
 			}
-
-			// p("checking enemies around king");
-			for (int i=0; i<tafl.boardWidth; i++) {
-				for (int j=0; j<tafl.boardHeight; j++) {
-					if(testBoard.isKing(i,j)){
-						int enemiesAround = 0;
-						if(testBoard.isBlack(i-1,j)){
-							enemiesAround++;
-						}
-						if(testBoard.isBlack(i+1,j)){
-							enemiesAround++;
-						}
-						if(testBoard.isBlack(i,j-1)){
-							enemiesAround++;
-						}
-						if(testBoard.isBlack(i,j+1)){
-							enemiesAround++;
-						}
-
-						//one enemy around is OK
-						enemiesAround--;
-						if(enemiesAround>0){
-							thisMove.score-= 50*enemiesAround;
-						}
-					}
-				}
-			}
-			// p("checking enemies around king done\n\n");
-
-			// p("checking number of pieces left");
 
 			for (int i=0; i<tafl.boardWidth; i++) {
 				for (int j=0; j<tafl.boardHeight; j++) {

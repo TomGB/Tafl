@@ -55,8 +55,8 @@ class Tafl {
 					mainBoard.set(selX,selY,'e');
 					selected=false;
 					mainBoard.takePieces(posX, posY, original);
-					blackWin=mainBoard.checkKing();
-					whiteWin=mainBoard.checkWin();
+					blackWin=mainBoard.checkBlackWin();
+					whiteWin=mainBoard.checkWhiteWin();
 
 					if(!blackWin&&!whiteWin&&whiteTurn){
 						myBot.takeTurn();
