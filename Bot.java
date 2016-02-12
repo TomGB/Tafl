@@ -31,7 +31,7 @@ class Bot {
 		// 			and take that move, then use that score, pass it up the tree for white
 		// 	order white moves into most optimal based on the optimal black moves.
 
-		Moves selectedMove = getBestWhiteMove(tafl.mainBoard);
+		Moves selectedMove = getBestWhiteMove(tafl.mainBoard, true);
 
 		tafl.myGUI.repaint();
 		tafl.update(selectedMove.startX,selectedMove.startY);
@@ -45,51 +45,73 @@ class Bot {
 		p("AI Happy");
 	}
 
-	public Moves getBestWhiteMove(Board testBoard){
+	//	function minimax(node, depth, maximizingPlayer)
+	//	    if depth = 0 or node is a terminal node
+	//	        return the heuristic value of node
+
+	//	    if maximizingPlayer
+	//	        bestValue := −∞
+	//	        for each child of node
+	//	            v := minimax(child, depth − 1, FALSE)
+	//	            bestValue := max(bestValue, v)
+	//	        return bestValue
+
+	//	    else    (* minimizing player *)
+	//	        bestValue := +∞
+	//	        for each child of node
+	//	            v := minimax(child, depth − 1, TRUE)
+	//	            bestValue := min(bestValue, v)
+	//	        return bestValue
+
+	public Moves getBestWhiteMove(Board testBoard, boolean recurse){
 		possibleMoves = new ArrayList<Moves>();
 
 		possibleMoves = getPossibleMoves(testBoard, 'w');
 
-		for (int i=0; i<possibleMoves.size(); i++) {
-			Board tempBoard = new Board(tafl.boardWidth, tafl.boardHeight, testBoard.pieces);
-			tafl.simulateMove(possibleMoves.get(i),tempBoard);
-			possibleMoves.get(i).score = getWorstBlackMove(tempBoard).score ;
+		if(recurse){
+			for (int i=0; i<possibleMoves.size(); i++) {
+				Board tempBoard = new Board(tafl.boardWidth, tafl.boardHeight, testBoard.pieces);
+				tafl.simulateMove(possibleMoves.get(i),tempBoard);
+				possibleMoves.get(i).score = getWorstBlackMove(tempBoard).score ;
+			}
+		}else{
+			possibleMoves = evaluateMoves(possibleMoves, testBoard);
 		}
 
-		Collections.sort(possibleMoves, new Comparator<Moves>() {
-	        @Override public int compare(Moves m1, Moves m2) {
-	            return m2.score - m1.score; // Ascending
-	        }
-
-	    });
+		possibleMoves = sortMovesBasedOnScore(possibleMoves);
 
 		int bestScore = possibleMoves.get(0).score;
 
 		int numberToSelectFrom = 0;
 
-		while(possibleMoves.get(numberToSelectFrom).score == bestScore && numberToSelectFrom < possibleMoves.size()){
+		while(possibleMoves.get(numberToSelectFrom).score == bestScore && numberToSelectFrom < possibleMoves.size()-1){
 			numberToSelectFrom++;
 		}
 
-		return possibleMoves.get(r(numberToSelectFrom));
+		Moves bestMove = possibleMoves.get(r(numberToSelectFrom));
+
+		return bestMove;
 
 	}
 
-	public Moves getWorstBlackMove(Board tempBoard){
-		ArrayList<Moves> possibleReturnMoves = new ArrayList<Moves>();
-		possibleReturnMoves = getPossibleMoves(tempBoard, 'b');
+	public Moves getWorstBlackMove(Board testBoard){
+		ArrayList<Moves> possibleMoves = new ArrayList<Moves>();
 
-		possibleReturnMoves = evaluateMoves(possibleReturnMoves, tempBoard);
+		possibleMoves = getPossibleMoves(testBoard, 'b');
 
-		Collections.sort(possibleReturnMoves, new Comparator<Moves>() {
-	        @Override public int compare(Moves m1, Moves m2) {
-	            return m2.score - m1.score; // Ascending
-	        }
-	    });
+		for (int i=0; i<possibleMoves.size(); i++) {
+			Board tempBoard = new Board(tafl.boardWidth, tafl.boardHeight, testBoard.pieces);
+			tafl.simulateMove(possibleMoves.get(i),tempBoard);
+			possibleMoves.get(i).score = getBestWhiteMove(tempBoard, false).score;
+		}
 
-	    Moves worstMove = possibleReturnMoves.get(possibleReturnMoves.size()-1);
+		possibleMoves = evaluateMoves(possibleMoves, testBoard);
 
-	    return worstMove;
+		possibleMoves = sortMovesBasedOnScore(possibleMoves);
+
+		Moves worstMove = possibleMoves.get(possibleMoves.size()-1);
+
+		return worstMove;
 	}
 
 	public ArrayList<Moves> getPossibleMoves(Board testBoard, char colour){
@@ -191,6 +213,15 @@ class Bot {
 		return movesToEvaluate;
 
 		// p("selecting move");
+	}
+
+	public ArrayList<Moves> sortMovesBasedOnScore(ArrayList<Moves> moveList){
+		Collections.sort(moveList, new Comparator<Moves>() {
+			@Override public int compare(Moves m1, Moves m2) {
+				return m2.score - m1.score; // Ascending
+			}
+		});
+		return moveList;
 	}
 
 	public static void s(int x){try{Thread.sleep(x);}catch(Exception e){}}
