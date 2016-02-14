@@ -63,6 +63,9 @@ class Bot {
 	//	            bestValue := min(bestValue, v)
 	//	        return bestValue
 
+	public int minimax(Board testBoard,int depth, char player){
+		return '0';
+	}
 	public Moves getBestWhiteMove(Board testBoard, boolean recurse){
 		possibleMoves = new ArrayList<Moves>();
 
