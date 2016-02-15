@@ -31,7 +31,7 @@ class Bot {
 		// 			and take that move, then use that score, pass it up the tree for white
 		// 	order white moves into most optimal based on the optimal black moves.
 
-		Moves selectedMove = getBestWhiteMove(tafl.mainBoard, true);
+		Moves selectedMove = getBestMove(tafl.mainBoard);
 
 		tafl.myGUI.repaint();
 		tafl.update(selectedMove.startX,selectedMove.startY);
@@ -43,6 +43,34 @@ class Bot {
 		tafl.myGUI.repaint();
 
 		p("AI Happy");
+	}
+
+	public Moves getBestMove(Board testBoard){
+		possibleMoves = new ArrayList<Moves>();
+		possibleMoves = getPossibleMoves(testBoard, 'w');
+
+		for (int i=0; i<possibleMoves.size(); i++) {
+			Board tempBoard = new Board(tafl.boardWidth, tafl.boardHeight, testBoard.pieces);
+			tafl.simulateMove(possibleMoves.get(i),tempBoard);
+			possibleMoves.get(i).score = minmax(tempBoard, 2, 'b');
+		}
+
+		possibleMoves = sortMovesBasedOnScore(possibleMoves);
+
+		int bestScore = possibleMoves.get(0).score;
+
+		int numberToSelectFrom = 0;
+
+		while(possibleMoves.get(numberToSelectFrom).score == bestScore && numberToSelectFrom < possibleMoves.size()-1){
+			numberToSelectFrom++;
+		}
+
+		Moves bestMove = possibleMoves.get(r(numberToSelectFrom));
+
+		// p("chosen: "+bestMove.score);
+
+		return bestMove;
+
 	}
 
 	//	function minimax(node, depth, maximizingPlayer)
@@ -63,58 +91,51 @@ class Bot {
 	//	            bestValue := min(bestValue, v)
 	//	        return bestValue
 
-	public int minimax(Board testBoard,int depth, char player){
-		return '0';
-	}
-	public Moves getBestWhiteMove(Board testBoard, boolean recurse){
-		possibleMoves = new ArrayList<Moves>();
+	public int minmax(Board testBoard, int depth, char player){
+		if(depth == 0){
+			// p(evaluateBoard(testBoard));
+			return evaluateBoard(testBoard);
+		}
+		if(player == 'w'){
+			int bestValue = -999;
 
-		possibleMoves = getPossibleMoves(testBoard, 'w');
-
-		if(recurse){
+			ArrayList<Moves> possibleMoves = new ArrayList<Moves>();
+			possibleMoves = getPossibleMoves(testBoard, 'w');
 			for (int i=0; i<possibleMoves.size(); i++) {
 				Board tempBoard = new Board(tafl.boardWidth, tafl.boardHeight, testBoard.pieces);
 				tafl.simulateMove(possibleMoves.get(i),tempBoard);
-				possibleMoves.get(i).score = getWorstBlackMove(tempBoard).score ;
+
+				int thisMoveScore = minmax(tempBoard, depth - 1, 'b');
+				if (thisMoveScore > bestValue) {
+					bestValue = thisMoveScore;
+				}
+				// possibleMoves.get(i).score = getWorstBlackMove(tempBoard).score ;
 			}
+
+			// p("best white score: "+bestValue);
+
+			return bestValue;
+
 		}else{
-			possibleMoves = evaluateMoves(possibleMoves, testBoard);
+			int bestValue = 999;
+
+			ArrayList<Moves> possibleMoves = new ArrayList<Moves>();
+			possibleMoves = getPossibleMoves(testBoard, 'b');
+			for (int i=0; i<possibleMoves.size(); i++) {
+				Board tempBoard = new Board(tafl.boardWidth, tafl.boardHeight, testBoard.pieces);
+				tafl.simulateMove(possibleMoves.get(i),tempBoard);
+
+				int thisMoveScore = minmax(tempBoard, depth - 1, 'w');
+				if (thisMoveScore < bestValue) {
+					bestValue = thisMoveScore;
+				}
+				// possibleMoves.get(i).score = getWorstBlackMove(tempBoard).score ;
+			}
+
+			// p("best black score: "+bestValue);
+
+			return bestValue;
 		}
-
-		possibleMoves = sortMovesBasedOnScore(possibleMoves);
-
-		int bestScore = possibleMoves.get(0).score;
-
-		int numberToSelectFrom = 0;
-
-		while(possibleMoves.get(numberToSelectFrom).score == bestScore && numberToSelectFrom < possibleMoves.size()-1){
-			numberToSelectFrom++;
-		}
-
-		Moves bestMove = possibleMoves.get(r(numberToSelectFrom));
-
-		return bestMove;
-
-	}
-
-	public Moves getWorstBlackMove(Board testBoard){
-		ArrayList<Moves> possibleMoves = new ArrayList<Moves>();
-
-		possibleMoves = getPossibleMoves(testBoard, 'b');
-
-		for (int i=0; i<possibleMoves.size(); i++) {
-			Board tempBoard = new Board(tafl.boardWidth, tafl.boardHeight, testBoard.pieces);
-			tafl.simulateMove(possibleMoves.get(i),tempBoard);
-			possibleMoves.get(i).score = getBestWhiteMove(tempBoard, false).score;
-		}
-
-		possibleMoves = evaluateMoves(possibleMoves, testBoard);
-
-		possibleMoves = sortMovesBasedOnScore(possibleMoves);
-
-		Moves worstMove = possibleMoves.get(possibleMoves.size()-1);
-
-		return worstMove;
 	}
 
 	public ArrayList<Moves> getPossibleMoves(Board testBoard, char colour){
@@ -139,81 +160,77 @@ class Bot {
 		return tempMoves;
 	}
 
-	public ArrayList<Moves> evaluateMoves(ArrayList<Moves> movesToEvaluate, Board inputBoard){
-		for (int moveNum=0; moveNum<movesToEvaluate.size(); moveNum++) {
-			Board testBoard = new Board(tafl.boardWidth, tafl.boardHeight, inputBoard.pieces);
-			Moves thisMove = movesToEvaluate.get(moveNum);
-			tafl.simulateMove(thisMove, testBoard);
+	public int evaluateBoard(Board inputBoard){
+		int score = 0;
+		Board testBoard = new Board(tafl.boardWidth, tafl.boardHeight, inputBoard.pieces);
 
-			if(testBoard.checkWhiteWin()){
-				thisMove.score = 100;
-				// p("this move won the game");
-			}else if(testBoard.checkBlackWin()){
-				thisMove.score = -100;
-			}else{
+		if(testBoard.checkWhiteWin()){
+			score = 100;
+			// p("this move won the game");
+		}else if(testBoard.checkBlackWin()){
+			score = -100;
+		}else{
 
-				// find king piece
-				// 
-				
-				int king_x = 0;
-				int king_y = 0;
+			// find king piece
+			// 
+			
+			int king_x = 0;
+			int king_y = 0;
 
-				for (int i=0; i<8; i++) {
-					for (int j=0; j<8; j++) {
-						if(testBoard.get(i,j)=='k'){
-							king_x = i;
-							king_y = j;
-							i = 9;
-							j = 9;
-						}
+			for (int i=0; i<8; i++) {
+				for (int j=0; j<8; j++) {
+					if(testBoard.get(i,j)=='k'){
+						king_x = i;
+						king_y = j;
+						i = 9;
+						j = 9;
 					}
 				}
-
-				// p("checking king movements");
-				int escapes = 0;
-				if(testBoard.validMove(king_x,king_y,0,0,'k')){
-					escapes+=1;
-				}
-				if(testBoard.validMove(king_x,king_y,0,tafl.boardHeight-1,'k')){
-					escapes+=1;
-				}
-				if(testBoard.validMove(king_x,king_y,tafl.boardWidth-1,0,'k')){
-					escapes+=1;
-				}
-				if(testBoard.validMove(king_x,king_y,tafl.boardWidth-1,tafl.boardHeight-1,'k')){
-					escapes+=1;
-				}
-
-				// p("escapes: "+escapes);
-
-				if(escapes>1){
-					thisMove.score = 90;
-				}else if(escapes == 1){
-					thisMove.score = 50;
-				}
-				// p("king movements done\n\n");
 			}
 
-			for (int i=0; i<tafl.boardWidth; i++) {
-				for (int j=0; j<tafl.boardHeight; j++) {
-					int numWhite = 0;
-					int numBlack = 0;
-					if(testBoard.isWhite(i,j)){
-						numWhite++;
-					}else if(testBoard.isBlack(i,j)){
-						numBlack++;
-					}
-					// p("num White: "+numWhite);
-					// p("num Black: "+numBlack);
-
-					thisMove.score+=numWhite-numBlack;
-				}
+			// p("checking king movements");
+			int escapes = 0;
+			if(testBoard.validMove(king_x,king_y,0,0,'k')){
+				escapes+=1;
 			}
-			// p("checking number of pieces left done \n\n");
+			if(testBoard.validMove(king_x,king_y,0,tafl.boardHeight-1,'k')){
+				escapes+=1;
+			}
+			if(testBoard.validMove(king_x,king_y,tafl.boardWidth-1,0,'k')){
+				escapes+=1;
+			}
+			if(testBoard.validMove(king_x,king_y,tafl.boardWidth-1,tafl.boardHeight-1,'k')){
+				escapes+=1;
+			}
 
+			// p("escapes: "+escapes);
+
+			if(escapes>1){
+				score = 90;
+			}else if(escapes == 1){
+				score = 50;
+			}
+			// p("king movements done\n\n");
 		}
 
-		return movesToEvaluate;
+		for (int i=0; i<tafl.boardWidth; i++) {
+			for (int j=0; j<tafl.boardHeight; j++) {
+				int numWhite = 0;
+				int numBlack = 0;
+				if(testBoard.isWhite(i,j)){
+					numWhite++;
+				}else if(testBoard.isBlack(i,j)){
+					numBlack++;
+				}
+				// p("num White: "+numWhite);
+				// p("num Black: "+numBlack);
+
+				score+=numWhite-numBlack;
+			}
+		}
+		// p("checking number of pieces left done \n\n");
+
+		return score;
 
 		// p("selecting move");
 	}
