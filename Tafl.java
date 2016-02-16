@@ -55,8 +55,9 @@ class Tafl {
 					mainBoard.set(selX,selY,'e');
 					selected=false;
 					mainBoard.takePieces(posX, posY, original);
-					blackWin=mainBoard.checkBlackWin();
-					whiteWin=mainBoard.checkWhiteWin();
+					mainBoard.setWinLose();
+					blackWin=mainBoard.blackHasWon;
+					whiteWin=mainBoard.whiteHasWon;
 
 					if(!blackWin&&!whiteWin&&whiteTurn){
 						myBot.takeTurn();
@@ -74,6 +75,7 @@ class Tafl {
 		tempBoard.set(thisMove.endX,thisMove.endY,thisMove.piece);
 		tempBoard.set(thisMove.startX,thisMove.startY,'e');
 		tempBoard.takePieces(thisMove.endX,thisMove.endY,thisMove.piece);
+		tempBoard.setWinLose();
 	}
 
 	public void undo(){

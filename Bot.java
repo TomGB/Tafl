@@ -53,6 +53,7 @@ class Bot {
 			Board tempBoard = new Board(tafl.boardWidth, tafl.boardHeight, testBoard.pieces);
 			tafl.simulateMove(possibleMoves.get(i),tempBoard);
 			possibleMoves.get(i).score = minmax(tempBoard, 2, 'b');
+			p("ai algo returns: "+possibleMoves.get(i).score);
 		}
 
 		possibleMoves = sortMovesBasedOnScore(possibleMoves);
@@ -67,7 +68,7 @@ class Bot {
 
 		Moves bestMove = possibleMoves.get(r(numberToSelectFrom));
 
-		// p("chosen: "+bestMove.score);
+		p("chosen: "+bestMove.score);
 
 		return bestMove;
 
@@ -164,15 +165,14 @@ class Bot {
 		int score = 0;
 		Board testBoard = new Board(tafl.boardWidth, tafl.boardHeight, inputBoard.pieces);
 
-		if(testBoard.checkWhiteWin()){
-			score = 100;
+		if(testBoard.whiteHasWon){
+			score = 999;
 			// p("this move won the game");
-		}else if(testBoard.checkBlackWin()){
-			score = -100;
+		}else if(testBoard.blackHasWon){
+			score = -999;
 		}else{
 
 			// find king piece
-			// 
 			
 			int king_x = 0;
 			int king_y = 0;

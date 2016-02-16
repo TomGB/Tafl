@@ -3,6 +3,8 @@ class Board {
 	char pieces[][];
 	int width, height;
 	int turnNum;
+	boolean whiteHasWon = false;
+	boolean blackHasWon = false;
 
 	ArrayList<String> history;
 
@@ -169,7 +171,12 @@ class Board {
 	public boolean isFriend(int x, int y, char piece){
 		return ((get(x,y)=='b'&&piece=='b')||((get(x,y)=='w'||get(x,y)=='k')&&(piece=='w'||piece=='k')));
 	}
-	public boolean checkBlackWin(){
+
+	public void setWinLose(){
+		blackHasWon = setBlackWin();
+		whiteHasWon = setWhiteWin();
+	}
+	public boolean setBlackWin(){
 		for (int i=0; i<width; i++) {
 			for (int j=0; j<height; j++) {
 				if(get(i,j)=='k'){
@@ -190,7 +197,7 @@ class Board {
 		}
 		return true;
 	}
-	public boolean checkWhiteWin(){
+	public boolean setWhiteWin(){
 		for (int i=0; i<width; i++) {
 			for (int j=0; j<height; j++) {
 				if(get(i,j)=='k'){
