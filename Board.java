@@ -35,6 +35,10 @@ class Board {
 		}
 	}
 	public void setUp(){
+
+		blackHasWon = false;
+		whiteHasWon = false;
+
 		history = new ArrayList<String>();
 		turnNum=0;
 		pieces[4][4]='k';
@@ -173,10 +177,10 @@ class Board {
 	}
 
 	public void setWinLose(){
-		blackHasWon = setBlackWin();
-		whiteHasWon = setWhiteWin();
+		setBlackWin();
+		setWhiteWin();
 	}
-	public boolean setBlackWin(){
+	public void setBlackWin(){
 		for (int i=0; i<width; i++) {
 			for (int j=0; j<height; j++) {
 				if(get(i,j)=='k'){
@@ -187,28 +191,27 @@ class Board {
 						(get(i,j+1)=='o'||get(i,j+1)=='b'||isKingSpace(i,j+1))
 					){
 						set(i,j,'e');
-						return true;
-					}
-					else{
-						return false;
+						blackHasWon = true;
+					}else{
+						i = width;
+						j = height;
 					}
 				}
 			}
 		}
-		return true;
 	}
-	public boolean setWhiteWin(){
+	public void setWhiteWin(){
 		for (int i=0; i<width; i++) {
 			for (int j=0; j<height; j++) {
 				if(get(i,j)=='k'){
-					if(i==width/2&&j==height/2){
-						return false;
+					if(i!=width/2&&j!=height/2){
+						if(isKingSpace(i,j)){
+							whiteHasWon = true;
+						}
 					}
-					return(isKingSpace(i,j));
 				}
 			}
 		}
-		return false;
 	}
 	public void saveHistory(){
 		String temp = "";

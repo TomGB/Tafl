@@ -165,6 +165,8 @@ class Bot {
 		int score = 0;
 		Board testBoard = new Board(tafl.boardWidth, tafl.boardHeight, inputBoard.pieces);
 
+		testBoard.setWinLose();
+
 		if(testBoard.whiteHasWon){
 			score = 999;
 			// p("this move won the game");
