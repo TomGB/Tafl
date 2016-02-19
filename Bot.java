@@ -52,7 +52,13 @@ class Bot {
 		for (int i=0; i<possibleMoves.size(); i++) {
 			Board tempBoard = new Board(tafl.boardWidth, tafl.boardHeight, testBoard.pieces);
 			tafl.simulateMove(possibleMoves.get(i),tempBoard);
-			possibleMoves.get(i).score = minmax(tempBoard, 2, 'b');
+			if(!tempBoard.whiteHasWon && !tempBoard.blackHasWon){
+				possibleMoves.get(i).score = minmax(tempBoard, 2, 'b');
+			}else if(tempBoard.whiteHasWon){
+				possibleMoves.get(i).score = 9999;
+			}else{
+				possibleMoves.get(i).score = -9999;
+			}
 			p("ai algo returns: "+possibleMoves.get(i).score);
 		}
 
@@ -106,7 +112,15 @@ class Bot {
 				Board tempBoard = new Board(tafl.boardWidth, tafl.boardHeight, testBoard.pieces);
 				tafl.simulateMove(possibleMoves.get(i),tempBoard);
 
-				int thisMoveScore = minmax(tempBoard, depth - 1, 'b');
+				int thisMoveScore = -999;
+
+				if(!tempBoard.whiteHasWon && !tempBoard.blackHasWon){
+					thisMoveScore = minmax(tempBoard, depth - 1, 'b');
+				}else if(tempBoard.whiteHasWon){
+					thisMoveScore = 9999;
+				}else{
+					thisMoveScore = -9999;
+				}
 				if (thisMoveScore > bestValue) {
 					bestValue = thisMoveScore;
 				}
@@ -126,10 +140,20 @@ class Bot {
 				Board tempBoard = new Board(tafl.boardWidth, tafl.boardHeight, testBoard.pieces);
 				tafl.simulateMove(possibleMoves.get(i),tempBoard);
 
-				int thisMoveScore = minmax(tempBoard, depth - 1, 'w');
+
+				int thisMoveScore = 999;
+
+				if(!tempBoard.whiteHasWon && !tempBoard.blackHasWon){
+					thisMoveScore = minmax(tempBoard, depth - 1, 'w');
+				}else if(tempBoard.whiteHasWon){
+					thisMoveScore = 9999;
+				}else{
+					thisMoveScore = -9999;
+				}
 				if (thisMoveScore < bestValue) {
 					bestValue = thisMoveScore;
 				}
+
 				// possibleMoves.get(i).score = getWorstBlackMove(tempBoard).score ;
 			}
 
