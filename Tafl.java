@@ -89,7 +89,7 @@ class Tafl {
 
 	public void undo(){
 		if(mainBoard.turnNum>0){
-			whiteTurn = !whiteTurn;
+			mainBoard.loadHistory();
 			mainBoard.loadHistory();
 			myGUI.repaint();
 		}
