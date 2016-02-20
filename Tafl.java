@@ -5,6 +5,9 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import javax.swing.Timer;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 class Tafl {
 	boolean selected=false, whiteTurn=false, blackWin=false, whiteWin=false;
@@ -59,9 +62,15 @@ class Tafl {
 					blackWin=mainBoard.blackHasWon;
 					whiteWin=mainBoard.whiteHasWon;
 
-					if(!blackWin&&!whiteWin&&whiteTurn){
-						myBot.takeTurn();
-					}
+					ActionListener listener = new ActionListener(){
+						public void actionPerformed(ActionEvent event){
+							if(!blackWin&&!whiteWin&&whiteTurn){
+								myBot.takeTurn();
+							}
+						}
+					};
+					Timer displayTimer = new Timer(60, listener);
+					displayTimer.start();
 
 					numMoves++;
 					p("moveNumber: "+numMoves);
