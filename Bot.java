@@ -19,18 +19,6 @@ class Bot {
 	public void takeTurn(){
 		p("AI's Turn");
 
-		//for each piece on the tafl.mainBoard
-		//for each possible move that the piece can make
-		//record to a list of possible moves
-		//
-		// AI logic
-		// 
-		// 	for each move white can make,
-		//		for each move black can make,
-		// 			find most optimal move for black,
-		// 			and take that move, then use that score, pass it up the tree for white
-		// 	order white moves into most optimal based on the optimal black moves.
-
 		Moves selectedMove = getBestMove(tafl.mainBoard);
 
 		tafl.myGUI.repaint();
@@ -80,23 +68,7 @@ class Bot {
 
 	}
 
-	//	function minimax(node, depth, maximizingPlayer)
-	//	    if depth = 0 or node is a terminal node
-	//	        return the heuristic value of node
-
-	//	    if maximizingPlayer
-	//	        bestValue := −∞
-	//	        for each child of node
-	//	            v := minimax(child, depth − 1, FALSE)
-	//	            bestValue := max(bestValue, v)
-	//	        return bestValue
-
-	//	    else    (* minimizing player *)
-	//	        bestValue := +∞
-	//	        for each child of node
-	//	            v := minimax(child, depth − 1, TRUE)
-	//	            bestValue := min(bestValue, v)
-	//	        return bestValue
+	// Could compact the Min Max into a more generic method rather than a big if statement.
 
 	public int minmax(Board testBoard, int depth, char player){
 		if(depth == 0){
@@ -248,9 +220,6 @@ class Bot {
 				}else if(testBoard.isBlack(i,j)){
 					numBlack++;
 				}
-				// p("num White: "+numWhite);
-				// p("num Black: "+numBlack);
-
 				score+=numWhite-numBlack;
 			}
 		}
