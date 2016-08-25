@@ -45,7 +45,7 @@ public class UserInteraction extends JFrame{
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 
 		try{
-			undoimg = ImageIO.read(new File("assets/undo.png"));
+			undoimg = ImageIO.read(new File("../assets/undo.png"));
 		}catch(IOException e){
 			p("error reading image");
 		}
@@ -193,8 +193,9 @@ public class UserInteraction extends JFrame{
 			float tempX=((float)(mX-50)/gridSpace);
 			float tempY=((float)(mY-50)/gridSpace);
 			if(tempX<9 && tempX>=0 && tempY<9 && tempY>=0){
-				p("update call");
-				tafl.update((int)tempX,(int)tempY);
+				p("board location select call");
+				tafl.selectLocation((int)tempX,(int)tempY);
+				tafl.myGUI.repaint();
 			}else if(!tafl.whiteWin && !tafl.blackWin && undo.inside(mX,mY)){
 				p("undo clicked");
 				tafl.undo();

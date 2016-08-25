@@ -20,13 +20,18 @@ class Tafl {
 	int numMoves = 0;
 	Bot myBot = new Bot(this);
 
-	public Tafl(){
+	boolean useAI;
+
+	public Tafl(Boolean useAI){
 		mainBoard.clear();
 		mainBoard.setUp();
+		this.useAI = useAI;
 		myGUI = new UserInteraction(this);
 	}
 
 	public void reset(){
+		whiteWin=false;
+		blackWin=false;
 		mainBoard.clear();
 		mainBoard.setUp();
 		whiteTurn=false;
@@ -34,50 +39,62 @@ class Tafl {
 		numMoves = 0;
 	}
 
-	public void update(int posX, int posY){ //if left button clicked
-		if(rules){
+	public void selectLocation(int posX, int posY){ //if left button clicked
+		if(rules){ // clicked when viewing rules
 			rules=false;
 		}else{
 			if(whiteWin||blackWin){ //reset if game has ended
-				whiteTurn=false;
-				whiteWin=false;
-				blackWin=false;
 				reset();
-			}
-			if((!whiteTurn&&mainBoard.isBlack(posX,posY))||(whiteTurn&&mainBoard.isWhite(posX,posY))){
-				selX=posX;
-				selY=posY;
-				selected=true;
-			}else if(selected){
-				char original = mainBoard.get(selX,selY);
-				if(mainBoard.validMove(selX, selY, posX, posY, original)){ //move piece
-					mainBoard.turnNum++;
-					mainBoard.saveHistory();
-					whiteTurn = !whiteTurn;
-					mainBoard.set(posX,posY,original);
-					mainBoard.set(selX,selY,'e');
-					selected=false;
-					mainBoard.takePieces(posX, posY, original);
-					mainBoard.setWinLose();
-					blackWin=mainBoard.blackHasWon;
-					whiteWin=mainBoard.whiteHasWon;
-
-					ActionListener listener = new ActionListener(){
-						public void actionPerformed(ActionEvent event){
-							if(!blackWin&&!whiteWin&&whiteTurn){
-								myBot.takeTurn();
-							}
-						}
-					};
-					Timer displayTimer = new Timer(60, listener);
-					displayTimer.start();
-
-					numMoves++;
-					p("moveNumber: "+numMoves);
+			}else{
+				// if selecting a new piece
+				if(isOwnPiece(posX, posY)){
+					selectPiece(posX, posY);
+				}else if(selected){
+					movePiece(posX, posY);
 				}
 			}
 		}
-		myGUI.repaint();
+	}
+
+	public boolean isOwnPiece(int posX, int posY){
+		return (!whiteTurn&&mainBoard.isBlack(posX,posY))||(whiteTurn&&mainBoard.isWhite(posX,posY));
+	}
+
+	public void selectPiece(int posX, int posY){
+		selX=posX;
+		selY=posY;
+		selected=true;
+	}
+
+	public void movePiece(int posX, int posY){
+		char original = mainBoard.get(selX,selY);
+		if(mainBoard.validMove(selX, selY, posX, posY, original)){ //move piece
+			mainBoard.turnNum++;
+			mainBoard.saveHistory();
+			whiteTurn = !whiteTurn;
+			mainBoard.set(posX,posY,original);
+			mainBoard.set(selX,selY,'e');
+			selected = false;
+			mainBoard.takePieces(posX, posY, original);
+			mainBoard.setWinLose();
+			blackWin = mainBoard.blackHasWon;
+			whiteWin = mainBoard.whiteHasWon;
+
+			if(useAI){
+				ActionListener listener = new ActionListener(){
+					public void actionPerformed(ActionEvent event){
+						if(!blackWin&&!whiteWin&&whiteTurn){
+							myBot.takeTurn();
+						}
+					}
+				};
+				Timer displayTimer = new Timer(60, listener);
+				displayTimer.start();
+			}
+
+			numMoves++;
+			p("moveNumber: "+numMoves);
+		}
 	}
 
 	public void simulateMove(Moves thisMove, Board tempBoard){ //if left button clicked
@@ -90,7 +107,11 @@ class Tafl {
 	public void undo(){
 		if(mainBoard.turnNum>0){
 			mainBoard.loadHistory();
-			mainBoard.loadHistory();
+			whiteTurn = !whiteTurn;
+			if(useAI){
+				mainBoard.loadHistory();
+				whiteTurn = !whiteTurn;
+			}
 			myGUI.repaint();
 		}
 	}
@@ -121,9 +142,9 @@ class Tafl {
 		try(BufferedReader br = new BufferedReader(new FileReader("taflsave.txt"))) {
 			br.readLine();
 			String turn = br.readLine();
-	        String line = br.readLine();
-	        for (int i=0; i<line.length(); i++) {
-	        	mainBoard.set(i%boardWidth, i/boardHeight, line.charAt(i));
+      String line = br.readLine();
+      for (int i=0; i<line.length(); i++) {
+      	mainBoard.set(i%boardWidth, i/boardHeight, line.charAt(i));
 			}
 			p(turn);
 			whiteTurn = (turn.equals("White's Turn"));
@@ -135,5 +156,13 @@ class Tafl {
 	public static void s(int x){try{Thread.sleep(x);}catch(Exception e){}}
 	public static void p(Object o){System.out.println(o);}
 	public static int r(int x){return (int)(Math.random()*x);}
-	public static void main(String args[]){new Tafl();}
+	public static void main(String args[]){
+		boolean useAI;
+		if(args.length==0){
+			useAI = false;
+		}else{
+			useAI = true;
+		}
+		new Tafl(useAI);
+	}
 }

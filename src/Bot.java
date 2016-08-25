@@ -22,9 +22,9 @@ class Bot {
 		Moves selectedMove = getBestMove(tafl.mainBoard);
 
 		tafl.myGUI.repaint();
-		tafl.update(selectedMove.startX,selectedMove.startY);
+		tafl.selectLocation(selectedMove.startX,selectedMove.startY);
 		tafl.myGUI.repaint();
-		tafl.update(selectedMove.endX,selectedMove.endY);
+		tafl.selectLocation(selectedMove.endX,selectedMove.endY);
 
 		hilightX = selectedMove.endX;
 		hilightY = selectedMove.endY;
@@ -171,7 +171,7 @@ class Bot {
 		}else{
 
 			// find king piece
-			
+
 			int king_x = 0;
 			int king_y = 0;
 
