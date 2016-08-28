@@ -31,14 +31,7 @@ public class UserInteraction extends JFrame{
 
 	public UserInteraction(Tafl _tafl){
 
-		try(BufferedReader br = new BufferedReader(new FileReader("../assets/rules.txt"))) {
-			String line;
-			while ((line = br.readLine()) != null) {
-      	rulesText += line+"\n";
-			}
- 		}catch(Exception e){
- 			p("error reading rules.txt");
- 		}
+		loadRulesText("../assets/rules.txt");
 
 		setTitle("Tafl");
 
@@ -177,12 +170,12 @@ public class UserInteraction extends JFrame{
 				g.fillRect(50+gridSpace*i,50+gridSpace*j,gridSpace,gridSpace);
 				g.setColor(Color.black);
 				g.drawRect(50+gridSpace*i,50+gridSpace*j,gridSpace,gridSpace);
-				drawPieces();
+				drawPieces(g, i, j);
 			}
 		}
 	}
 
-	public void drawPieces(Graphics g){
+	public void drawPieces(Graphics g, int i, int j){
 		char tempPiece = tafl.mainBoard.get(i,j);
 		if(tempPiece=='b'){
 			g.setColor(Color.black);
@@ -224,6 +217,17 @@ public class UserInteraction extends JFrame{
 				tafl.reset();
 			}
 		}
+	}
+
+	public void loadRulesText(String path){
+		try(BufferedReader br = new BufferedReader(new FileReader(path))) {
+			String line;
+			while ((line = br.readLine()) != null) {
+      	rulesText += line+"\n";
+			}
+ 		}catch(Exception e){
+ 			p("error reading rules.txt");
+ 		}
 	}
 	public static void p(Object o){System.out.println(o);}
 	public static int r(int x){return (int)(Math.random()*x);}
