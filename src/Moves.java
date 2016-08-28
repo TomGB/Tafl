@@ -19,5 +19,4 @@ class Moves {
 
 	public static void p(Object o){System.out.println(o);}
 	public static int r(int x){return (int)(Math.random()*x);}
-	public static void main(String args[]){new Tafl();}
 }

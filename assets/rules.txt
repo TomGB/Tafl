@@ -1,0 +1,17 @@
+Black is attacking and goes first, white is defending it's King (the pink piece in
+the middle).
+
+To win black must surround the King on 4 sides or white must reach one of the
+four corners with its King.
+Pieces may move any distance in a strait line, horizontally or vertically,
+unless another piece blocks its path.
+
+Only the King may sit in the red spaces.
+
+To take an enemy piece, on your turn surround it on opposite sides with
+two pieces.
+
+The red spaces count as enemy pieces when it is not your turn and can be
+
+used in capturing either side, unless the King is on it in which case it counts as
+white only.

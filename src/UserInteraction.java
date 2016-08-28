@@ -25,18 +25,20 @@ public class UserInteraction extends JFrame{
 
 	TextBox reset,load,save,rules,undo,blackWinText,whiteWinText,whiteTurnText,blackTurnText;
 
-	String rulesText;
+	String rulesText = "";
 
 	Image undoimg;
 
 	public UserInteraction(Tafl _tafl){
 
-		rulesText = "Black is attacking and goes first, white is defending it's King (the pink piece in\nthe middle).\n\n";
-		rulesText+= "To win black must surround the King on 4 sides or white must reach one of the\nfour corners with its King.\n\n";
-		rulesText+= "Pieces may move any distance in a strait line,horisontally or vertically,\nunless another piece blocks its path.\n\n";
-		rulesText+= "Only the King may sit in the red spaces.\n\nTo take an enemy piece, on your turn suround it on opposite sides with\n";
-		rulesText+= "two pieces.\n\nThe red spaces count as enemy pieces when it is not your turn and can be\n";
-		rulesText+= "used in capturing either side, unless the King is on it in which case it counts as\nwhite only.";
+		try(BufferedReader br = new BufferedReader(new FileReader("../assets/rules.txt"))) {
+			String line;
+			while ((line = br.readLine()) != null) {
+      	rulesText += line+"\n";
+			}
+ 		}catch(Exception e){
+ 			p("error reading rules.txt");
+ 		}
 
 		setTitle("Tafl");
 
@@ -47,7 +49,7 @@ public class UserInteraction extends JFrame{
 		try{
 			undoimg = ImageIO.read(new File("../assets/undo.png"));
 		}catch(IOException e){
-			p("error reading image");
+			p("error reading undo image");
 		}
 
 		reset = new TextBox(370,10,80,40,"Reset");
