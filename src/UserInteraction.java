@@ -71,28 +71,7 @@ public class UserInteraction extends JFrame{
 				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON); //anti alias to make lines smooth
 				AffineTransform at = g2.getTransform();
 
-				for (int i=0; i<tafl.mainBoard.width; i++) {
-					for (int j=0; j<tafl.mainBoard.height; j++) {
-						g.setColor(Color.white);
-						if((i==0&&j==0)||(i==0&&j==tafl.mainBoard.width-1)||(i==8&&j==0)||(i==8&&j==8)||(i==4&&j==4)){
-							g.setColor(Color.red);
-						}
-						g.fillRect(50+gridSpace*i,50+gridSpace*j,gridSpace,gridSpace);
-						g.setColor(Color.black);
-						g.drawRect(50+gridSpace*i,50+gridSpace*j,gridSpace,gridSpace);
-						char tempPiece = tafl.mainBoard.get(i,j);
-						if(tempPiece=='b'){
-							g.setColor(Color.black);
-							g.fillOval(50+gridSpace*i+pieceSpace,50+gridSpace*j+pieceSpace,pieceRad,pieceRad);
-						}else if(tempPiece=='w'){
-							g.setColor(Color.black);
-							g.drawOval(50+gridSpace*i+pieceSpace,50+gridSpace*j+pieceSpace,pieceRad,pieceRad);
-						}else if(tempPiece=='k'){
-							g.setColor(Color.pink);
-							g.fillOval(50+gridSpace*i+pieceSpace,50+gridSpace*j+pieceSpace,pieceRad,pieceRad);
-						}
-					}
-				}
+				drawBoardAndPieces(g);
 
 				if(tafl.blackWin){
 					blackWinText.draw(true,g);
@@ -185,6 +164,36 @@ public class UserInteraction extends JFrame{
 			setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 		}
 	}
+
+	public void drawBoardAndPieces(Graphics g){
+		for (int i=0; i<tafl.mainBoard.width; i++) {
+			for (int j=0; j<tafl.mainBoard.height; j++) {
+				g.setColor(Color.white);
+				if((i==0&&j==0)||(i==0&&j==tafl.mainBoard.width-1)||(i==8&&j==0)||(i==8&&j==8)||(i==4&&j==4)){
+					g.setColor(Color.red);
+				}
+				g.fillRect(50+gridSpace*i,50+gridSpace*j,gridSpace,gridSpace);
+				g.setColor(Color.black);
+				g.drawRect(50+gridSpace*i,50+gridSpace*j,gridSpace,gridSpace);
+				drawPieces();
+			}
+		}
+	}
+
+	public void drawPieces(Graphics g){
+		char tempPiece = tafl.mainBoard.get(i,j);
+		if(tempPiece=='b'){
+			g.setColor(Color.black);
+			g.fillOval(50+gridSpace*i+pieceSpace,50+gridSpace*j+pieceSpace,pieceRad,pieceRad);
+		}else if(tempPiece=='w'){
+			g.setColor(Color.black);
+			g.drawOval(50+gridSpace*i+pieceSpace,50+gridSpace*j+pieceSpace,pieceRad,pieceRad);
+		}else if(tempPiece=='k'){
+			g.setColor(Color.pink);
+			g.fillOval(50+gridSpace*i+pieceSpace,50+gridSpace*j+pieceSpace,pieceRad,pieceRad);
+		}
+	}
+
 	public void setMouse(boolean state){
 		if(state){
 			mouseIsDown=true;
