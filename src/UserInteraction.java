@@ -19,8 +19,8 @@ public class UserInteraction extends JFrame{
 	int selectSpacing=4;
 	int textHeight = 40;
 	int textWidth = 200;
-	int frameX = 80;
-	int frameY = 70;
+	int rulesTextOffsetX = 80;
+	int rulesTextOffsetY = 70;
 	Font f = new Font("Dialog", Font.PLAIN, 16);
 
 	TextBox reset,load,save,rules,undo,blackWinText,whiteWinText,whiteTurnText,blackTurnText;
@@ -30,20 +30,12 @@ public class UserInteraction extends JFrame{
 	Image undoimg;
 
 	public UserInteraction(Tafl _tafl){
-
-		loadRulesText("../assets/rules.txt");
-
-		setTitle("Tafl");
-
 		tafl = _tafl;
-
+		setTitle("Tafl");
+		setResizable( false );
+		loadRulesText("../assets/rules.txt");
+		loadUndoImage("../assets/undo.png");
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-
-		try{
-			undoimg = ImageIO.read(new File("../assets/undo.png"));
-		}catch(IOException e){
-			p("error reading undo image");
-		}
 
 		reset = new TextBox(370,10,80,40,"Reset");
 		load = new TextBox(460,10,80,40,"Load");
@@ -55,16 +47,14 @@ public class UserInteraction extends JFrame{
 		whiteTurnText = new TextBox(130,10,textWidth,textHeight,"White's Turn");
 		blackTurnText = new TextBox(130,10,textWidth,textHeight,"Black's Turn");
 
-		setResizable( false );
-
 		JPanel drawing = new JPanel(){
 			public static final long serialVersionUID = 1L;
 			public void paint(Graphics g){
 				super.paintComponent(g);
 				Graphics2D g2 = (Graphics2D) g;
+				AffineTransform at = g2.getTransform();
 				g.setFont(f);
 				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON); //anti alias to make lines smooth
-				AffineTransform at = g2.getTransform();
 
 				drawBoardAndPieces(g);
 
@@ -73,37 +63,10 @@ public class UserInteraction extends JFrame{
 				}else if(tafl.whiteWin){
 					whiteWinText.draw(true, g);
 				}else if(tafl.rules){
-					g.setColor(new Color(255,255,255,210));
-					g.fillRect(60,60,sizeX-120,sizeY-120);
-					g.setColor(Color.black);
-					g.drawRect(60,60,sizeX-120,sizeY-120);
-					for (String line : rulesText.split("\n")){
-	        			g.drawString(line, frameX, frameY += g.getFontMetrics().getHeight());
-					}
-					frameY = 70;
-
-					if(tafl.whiteTurn){
-						whiteTurnText.draw(false,g);
-					}else{
-						blackTurnText.draw(false,g);
-					}
-					undo.draw(false,g);
-					save.draw(false,g);
-					load.draw(false,g);
-					reset.draw(false,g);
-					rules.draw(true,g);
-
+					drawRulesText(g);
+					setButtonsStatus(false, g);
 				}else{
-					if(tafl.whiteTurn){
-						whiteTurnText.draw(true,g);
-					}else{
-						blackTurnText.draw(true,g);
-					}
-					undo.draw(true,g);
-					save.draw(true,g);
-					load.draw(true,g);
-					reset.draw(true,g);
-					rules.draw(true,g);
+					setButtonsStatus(true, g);
 
 					if(tafl.selected){
 						g.setColor(Color.blue);
@@ -164,28 +127,31 @@ public class UserInteraction extends JFrame{
 		for (int i=0; i<tafl.mainBoard.width; i++) {
 			for (int j=0; j<tafl.mainBoard.height; j++) {
 				g.setColor(Color.white);
-				if((i==0&&j==0)||(i==0&&j==tafl.mainBoard.width-1)||(i==8&&j==0)||(i==8&&j==8)||(i==4&&j==4)){
+				if((i==0&&j==0)||(i==0&&j==8)||(i==8&&j==0)||(i==8&&j==8)||(i==4&&j==4)){
 					g.setColor(Color.red);
 				}
 				g.fillRect(50+gridSpace*i,50+gridSpace*j,gridSpace,gridSpace);
 				g.setColor(Color.black);
 				g.drawRect(50+gridSpace*i,50+gridSpace*j,gridSpace,gridSpace);
-				drawPieces(g, i, j);
+				drawPiece(g, i, j);
 			}
 		}
 	}
 
-	public void drawPieces(Graphics g, int i, int j){
+	public void drawPiece(Graphics g, int i, int j){
 		char tempPiece = tafl.mainBoard.get(i,j);
+
+		int x = 50+gridSpace*i+pieceSpace;
+		int y = 50+gridSpace*j+pieceSpace;
 		if(tempPiece=='b'){
 			g.setColor(Color.black);
-			g.fillOval(50+gridSpace*i+pieceSpace,50+gridSpace*j+pieceSpace,pieceRad,pieceRad);
+			g.fillOval(x, y, pieceRad, pieceRad);
 		}else if(tempPiece=='w'){
 			g.setColor(Color.black);
-			g.drawOval(50+gridSpace*i+pieceSpace,50+gridSpace*j+pieceSpace,pieceRad,pieceRad);
+			g.drawOval(x, y, pieceRad, pieceRad);
 		}else if(tempPiece=='k'){
 			g.setColor(Color.pink);
-			g.fillOval(50+gridSpace*i+pieceSpace,50+gridSpace*j+pieceSpace,pieceRad,pieceRad);
+			g.fillOval(x, y, pieceRad, pieceRad);
 		}
 	}
 
@@ -225,10 +191,43 @@ public class UserInteraction extends JFrame{
 			while ((line = br.readLine()) != null) {
       	rulesText += line+"\n";
 			}
- 		}catch(Exception e){
+ 		}catch(IOException e){
  			p("error reading rules.txt");
  		}
 	}
+
+	public void loadUndoImage(String path){
+		try{
+			undoimg = ImageIO.read(new File(path));
+		}catch(IOException e){
+			p("error reading undo image");
+		}
+	}
+
+	public void drawRulesText(Graphics g){
+		g.setColor(new Color(255,255,255,210));
+		g.fillRect(60,60,sizeX-120,sizeY-120);
+		g.setColor(Color.black);
+		g.drawRect(60,60,sizeX-120,sizeY-120);
+		for (String line : rulesText.split("\n")){
+					g.drawString(line, rulesTextOffsetX, rulesTextOffsetY += g.getFontMetrics().getHeight());
+		}
+		rulesTextOffsetY = 70;
+	}
+
+	public void setButtonsStatus(Boolean active, Graphics g){
+		if(tafl.whiteTurn){
+			whiteTurnText.draw(active,g);
+		}else{
+			blackTurnText.draw(active,g);
+		}
+		undo.draw(active,g);
+		save.draw(active,g);
+		load.draw(active,g);
+		reset.draw(active,g);
+		rules.draw(true,g);
+	}
+
 	public static void p(Object o){System.out.println(o);}
 	public static int r(int x){return (int)(Math.random()*x);}
 }
