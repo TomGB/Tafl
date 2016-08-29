@@ -17,22 +17,15 @@ public class UserInteraction extends JFrame{
 	int pieceRad = gridSpace/2;
 	int pieceSpace=pieceRad/2;
 	int selectSpacing=4;
-	int textHeight = 40;
-	int textWidth = 200;
-	int rulesTextOffsetX = 80;
-	int rulesTextOffsetY = 70;
 	Font f = new Font("Dialog", Font.PLAIN, 16);
-	TextBoxController tbc = new TextBoxController();
-	String rulesText = "";
-	Image undoimg;
+	TextBoxController tbc;
 
 	public UserInteraction(Tafl _tafl){
 		tafl = _tafl;
 		setTitle("Tafl");
 		setResizable( false );
-		loadRulesText("../assets/rules.txt");
-		loadUndoImage("../assets/undo.png");
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		tbc = new TextBoxController(tafl);
 
 		JPanel drawing = new JPanel(){
 			public static final long serialVersionUID = 1L;
@@ -50,7 +43,7 @@ public class UserInteraction extends JFrame{
 				}else if(tafl.whiteWin){
 					tbc.whiteWinText.draw(true, g);
 				}else if(tafl.rules){
-					drawRulesText(g);
+					tbc.drawRulesText(g);
 					tbc.drawButtons(false, g);
 				}else{
 					tbc.drawButtons(true, g);
@@ -103,7 +96,10 @@ public class UserInteraction extends JFrame{
 	public void setMouse(int _mX, int _mY){
 		mX=_mX;
 		mY=_mY;
-		if((!tafl.whiteWin && !tafl.blackWin&&undo.inside(mX,mY))||save.inside(mX,mY)||load.inside(mX,mY)||reset.inside(mX,mY)||rules.inside(mX,mY)){
+		if(!tafl.whiteWin && !tafl.blackWin
+			&& (tbc.undo.inside(mX,mY)||tbc.save.inside(mX,mY)
+			||tbc.load.inside(mX,mY)||tbc.reset.inside(mX,mY)
+			||tbc.rules.inside(mX,mY))){
 			setCursor(new Cursor(Cursor.HAND_CURSOR));
 		}else{
 			setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
@@ -153,53 +149,10 @@ public class UserInteraction extends JFrame{
 				p("board location select call");
 				tafl.selectLocation((int)tempX,(int)tempY);
 				tafl.myGUI.repaint();
-			}else if(!tafl.whiteWin && !tafl.blackWin && undo.inside(mX,mY)){
-				p("undo clicked");
-				tafl.undo();
-			}else if(rules.inside(mX,mY)){
-				p("display rules");
-				tafl.rules();
-			}else if(!tafl.rules&&save.inside(mX,mY)){
-				p("save game");
-				tafl.save();
-			}else if(!tafl.rules&&load.inside(mX,mY)){
-				p("load game");
-				tafl.load();
-			}else if(!tafl.rules&&reset.inside(mX,mY)){
-				p("reset game");
-				tafl.reset();
+			}else{
+				tbc.checkButtons(mX, mY);
 			}
 		}
-	}
-
-	public void loadRulesText(String path){
-		try(BufferedReader br = new BufferedReader(new FileReader(path))) {
-			String line;
-			while ((line = br.readLine()) != null) {
-      	rulesText += line+"\n";
-			}
- 		}catch(IOException e){
- 			p("error reading rules.txt");
- 		}
-	}
-
-	public void loadUndoImage(String path){
-		try{
-			undoimg = ImageIO.read(new File(path));
-		}catch(IOException e){
-			p("error reading undo image");
-		}
-	}
-
-	public void drawRulesText(Graphics g){
-		g.setColor(new Color(255,255,255,210));
-		g.fillRect(60,60,sizeX-120,sizeY-120);
-		g.setColor(Color.black);
-		g.drawRect(60,60,sizeX-120,sizeY-120);
-		for (String line : rulesText.split("\n")){
-					g.drawString(line, rulesTextOffsetX, rulesTextOffsetY += g.getFontMetrics().getHeight());
-		}
-		rulesTextOffsetY = 70;
 	}
 
 	public static void p(Object o){System.out.println(o);}

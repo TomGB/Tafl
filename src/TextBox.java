@@ -35,6 +35,11 @@ class TextBox {
 			g.drawImage(image,74,12, null);
 		}
 	}
+
+	/**
+			deactivate when in active
+	*/
+
 	public boolean inside(int x, int y){
 		return (x>posX&&x<posX+width&&y>posY&&y<posY+height);
 	}
