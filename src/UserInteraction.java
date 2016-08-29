@@ -22,11 +22,8 @@ public class UserInteraction extends JFrame{
 	int rulesTextOffsetX = 80;
 	int rulesTextOffsetY = 70;
 	Font f = new Font("Dialog", Font.PLAIN, 16);
-
-	TextBox reset,load,save,rules,undo,blackWinText,whiteWinText,whiteTurnText,blackTurnText;
-
+	TextBoxController tbc = new TextBoxController();
 	String rulesText = "";
-
 	Image undoimg;
 
 	public UserInteraction(Tafl _tafl){
@@ -36,16 +33,6 @@ public class UserInteraction extends JFrame{
 		loadRulesText("../assets/rules.txt");
 		loadUndoImage("../assets/undo.png");
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-
-		reset = new TextBox(370,10,80,40,"Reset");
-		load = new TextBox(460,10,80,40,"Load");
-		save = new TextBox(550,10,80,40,"Save");
-		rules = new TextBox(640,10,80,40,"Rules");
-		undo = new TextBox(70,10,50,40,undoimg);
-		blackWinText = new TextBox((sizeX-textWidth)/2,(sizeY-textHeight)/2,textWidth,textHeight,"Black has Won");
-		whiteWinText = new TextBox((sizeX-textWidth)/2,(sizeY-textHeight)/2,textWidth,textHeight,"White has Won");
-		whiteTurnText = new TextBox(130,10,textWidth,textHeight,"White's Turn");
-		blackTurnText = new TextBox(130,10,textWidth,textHeight,"Black's Turn");
 
 		JPanel drawing = new JPanel(){
 			public static final long serialVersionUID = 1L;
@@ -59,14 +46,14 @@ public class UserInteraction extends JFrame{
 				drawBoardAndPieces(g);
 
 				if(tafl.blackWin){
-					blackWinText.draw(true,g);
+					tbc.blackWinText.draw(true,g);
 				}else if(tafl.whiteWin){
-					whiteWinText.draw(true, g);
+					tbc.whiteWinText.draw(true, g);
 				}else if(tafl.rules){
 					drawRulesText(g);
-					setButtonsStatus(false, g);
+					tbc.drawButtons(false, g);
 				}else{
-					setButtonsStatus(true, g);
+					tbc.drawButtons(true, g);
 
 					if(tafl.selected){
 						g.setColor(Color.blue);
@@ -213,19 +200,6 @@ public class UserInteraction extends JFrame{
 					g.drawString(line, rulesTextOffsetX, rulesTextOffsetY += g.getFontMetrics().getHeight());
 		}
 		rulesTextOffsetY = 70;
-	}
-
-	public void setButtonsStatus(Boolean active, Graphics g){
-		if(tafl.whiteTurn){
-			whiteTurnText.draw(active,g);
-		}else{
-			blackTurnText.draw(active,g);
-		}
-		undo.draw(active,g);
-		save.draw(active,g);
-		load.draw(active,g);
-		reset.draw(active,g);
-		rules.draw(true,g);
 	}
 
 	public static void p(Object o){System.out.println(o);}
