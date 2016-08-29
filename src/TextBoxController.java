@@ -5,6 +5,7 @@ import java.io.*;
 import javax.imageio.*;
 import java.awt.event.*;
 import java.awt.image.*;
+import java.util.*;
 
 class TextBoxController{
   TextBox reset,load,save,rules,undo,blackWinText,whiteWinText,whiteTurnText,blackTurnText;
@@ -16,6 +17,7 @@ class TextBoxController{
   int sizeX=800, sizeY=800;
   Image undoimg;
   String rulesText = "";
+  ArrayList<TextBox> buttons = new ArrayList<TextBox>();
 
   public TextBoxController(Tafl _tafl){
     tafl = _tafl;
@@ -31,20 +33,39 @@ class TextBoxController{
     whiteWinText = new TextBox((sizeX-textWidth)/2,(sizeY-textHeight)/2,textWidth,textHeight,"White has Won");
     whiteTurnText = new TextBox(130,10,textWidth,textHeight,"White's Turn");
     blackTurnText = new TextBox(130,10,textWidth,textHeight,"Black's Turn");
+
+    buttons.add(reset);
+    buttons.add(load);
+    buttons.add(save);
+    buttons.add(rules);
+    buttons.add(undo);
+    buttons.add(blackWinText);
+    buttons.add(whiteWinText);
+    buttons.add(whiteTurnText);
+    buttons.add(blackTurnText);
+
   }
 
-	public void drawButtons(Boolean active, Graphics g){
-		if(tafl.whiteTurn){
-			whiteTurnText.draw(active,g);
-		}else{
-			blackTurnText.draw(active,g);
-		}
-		undo.draw(active,g);
-		save.draw(active,g);
-		load.draw(active,g);
-		reset.draw(active,g);
-		rules.draw(true,g);
+	public void drawButtons(Graphics g){
+    for (TextBox button: buttons){
+      button.draw(g);
+    }
 	}
+
+  public void setButtons(boolean active){
+    if(tafl.whiteTurn){
+			whiteTurnText.setVisible(true);
+      blackTurnText.setVisible(false);
+		}else{
+			blackTurnText.setVisible(true);
+      blackTurnText.setVisible(false);
+		}
+    undo.setActive(active);
+		save.setActive(active);
+		load.setActive(active);
+		reset.setActive(active);
+		rules.setActive(true);
+  }
 
   public void checkButtons(int x, int y){
     if(!tafl.whiteWin && !tafl.blackWin && undo.inside(x,y)){
@@ -93,6 +114,12 @@ class TextBoxController{
     }catch(IOException e){
       p("error reading rules.txt");
     }
+  }
+
+  public boolean isMouseInside(int x, int y){
+    return (undo.inside(x, y)||save.inside(x, y)
+    ||load.inside(x, y)||reset.inside(x, y)
+    ||rules.inside(x, y));
   }
 
   public static void p(Object o){System.out.println(o);}

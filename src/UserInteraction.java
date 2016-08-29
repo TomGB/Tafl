@@ -38,21 +38,25 @@ public class UserInteraction extends JFrame{
 
 				drawBoardAndPieces(g);
 
+				tbc.whiteWinText.setVisible(false);
+				tbc.blackWinText.setVisible(false);
+
 				if(tafl.blackWin){
-					tbc.blackWinText.draw(true,g);
+					tbc.blackWinText.setVisible(true);
 				}else if(tafl.whiteWin){
-					tbc.whiteWinText.draw(true, g);
+					tbc.whiteWinText.setVisible(true);
 				}else if(tafl.rules){
 					tbc.drawRulesText(g);
-					tbc.drawButtons(false, g);
+					tbc.setButtons(false);
 				}else{
-					tbc.drawButtons(true, g);
-
+					tbc.setButtons(true);
 					if(tafl.selected){
 						g.setColor(Color.blue);
 						g.drawRect(50+gridSpace*tafl.selX+selectSpacing,50+gridSpace*tafl.selY+selectSpacing,gridSpace-selectSpacing*2,gridSpace-selectSpacing*2);
 					}
 				}
+
+				tbc.drawButtons(g);
 
 				// g.setColor(Color.black);
 
@@ -87,7 +91,7 @@ public class UserInteraction extends JFrame{
 		setDefaultCloseOperation(EXIT_ON_CLOSE); //exit application when x is clicked
 	}
 	public void setKey(boolean state, int key){
-			 if(key==87){	up=state;}
+		if(key==87){	up=state;}
 		else if(key==83){	down=state;}
 		else if(key==65){	left=state;}
 		else if(key==68){	right=state;}
@@ -96,10 +100,7 @@ public class UserInteraction extends JFrame{
 	public void setMouse(int _mX, int _mY){
 		mX=_mX;
 		mY=_mY;
-		if(!tafl.whiteWin && !tafl.blackWin
-			&& (tbc.undo.inside(mX,mY)||tbc.save.inside(mX,mY)
-			||tbc.load.inside(mX,mY)||tbc.reset.inside(mX,mY)
-			||tbc.rules.inside(mX,mY))){
+		if(tbc.isMouseInside(mX, mY)){
 			setCursor(new Cursor(Cursor.HAND_CURSOR));
 		}else{
 			setCursor(new Cursor(Cursor.DEFAULT_CURSOR));

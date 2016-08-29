@@ -9,6 +9,8 @@ class TextBox {
 	Image image;
 	final Color light = new Color(255,255,255,200);
 	final Color dark = new Color(0,0,0,40);
+	boolean active = true;
+	boolean visible = true;
 
 	public TextBox(int _posX, int _posY, int _width, int _height, String _text){
 		posX = _posX;
@@ -24,16 +26,28 @@ class TextBox {
 		height = _height;
 		image = _image;
 	}
-	public void draw(Boolean state, Graphics g){
-		g.setColor(state?light:dark);
-		g.fillRect(posX,posY,width,height);
-		g.setColor(Color.black);
-		g.drawRect(posX,posY,width,height);
-		if(text!=null){
-			g.drawString(text,posX+20,posY+26);
+	public void draw(Graphics g){
+		if(visible){
+			g.setColor(active?light:dark);
+			g.fillRect(posX,posY,width,height);
+			g.setColor(Color.black);
+			g.drawRect(posX,posY,width,height);
+			if(text!=null){
+				g.drawString(text,posX+20,posY+26);
+			}else{
+				g.drawImage(image,74,12, null);
+			}
 		}else{
-			g.drawImage(image,74,12, null);
+			console.log("invisible" + text);
 		}
+	}
+
+	public void setActive(boolean input){
+		active = input;
+	}
+
+	public void setVisible(boolean input){
+		visible = input;
 	}
 
 	/**
@@ -41,6 +55,6 @@ class TextBox {
 	*/
 
 	public boolean inside(int x, int y){
-		return (x>posX&&x<posX+width&&y>posY&&y<posY+height);
+		return (x>posX&&x<posX+width&&y>posY&&y<posY+height && active && visible);
 	}
 }
