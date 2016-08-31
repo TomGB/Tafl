@@ -38,7 +38,7 @@ class TextBox {
 				g.drawImage(image,74,12, null);
 			}
 		}else{
-			console.log("invisible" + text);
+			p("invisible" + text);
 		}
 	}
 
@@ -57,4 +57,7 @@ class TextBox {
 	public boolean inside(int x, int y){
 		return (x>posX&&x<posX+width&&y>posY&&y<posY+height && active && visible);
 	}
+
+	public static void p(Object o){System.out.println(o);}
+	public static int r(int x){return (int)(Math.random()*x);}
 }

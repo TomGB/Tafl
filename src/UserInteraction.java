@@ -24,7 +24,8 @@ public class UserInteraction extends JFrame{
 		tafl = _tafl;
 		setTitle("Tafl");
 		setResizable( false );
-		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		GraphicsEnvironment ge;
+		ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		tbc = new TextBoxController(tafl);
 
 		JPanel drawing = new JPanel(){
@@ -34,7 +35,11 @@ public class UserInteraction extends JFrame{
 				Graphics2D g2 = (Graphics2D) g;
 				AffineTransform at = g2.getTransform();
 				g.setFont(f);
-				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON); //anti alias to make lines smooth
+				g2.setRenderingHint(
+					RenderingHints.KEY_ANTIALIASING,
+					RenderingHints.VALUE_ANTIALIAS_ON
+				);
+				//anti alias to make lines smooth
 
 				drawBoardAndPieces(g);
 
@@ -52,7 +57,12 @@ public class UserInteraction extends JFrame{
 					tbc.setButtons(true);
 					if(tafl.selected){
 						g.setColor(Color.blue);
-						g.drawRect(50+gridSpace*tafl.selX+selectSpacing,50+gridSpace*tafl.selY+selectSpacing,gridSpace-selectSpacing*2,gridSpace-selectSpacing*2);
+						g.drawRect(
+							50+gridSpace*tafl.selX+selectSpacing,
+							50+gridSpace*tafl.selY+selectSpacing,
+							gridSpace-selectSpacing*2,
+							gridSpace-selectSpacing*2
+						);
 					}
 				}
 
@@ -62,7 +72,12 @@ public class UserInteraction extends JFrame{
 
 				// for (int i=0; i<tafl.possibleMoves.size(); i++) {
 				// 	Moves temp = tafl.possibleMoves.get(i);
-				// 	g.fillRect(50+gridSpace*temp.endX+selectSpacing,50+gridSpace*temp.endY+selectSpacing,gridSpace-selectSpacing*2,gridSpace-selectSpacing*2);
+				// 	g.fillRect(
+				//		50+gridSpace*temp.endX+selectSpacing,
+				//		50+gridSpace*temp.endY+selectSpacing,
+				//		gridSpace-selectSpacing*2,
+				//		gridSpace-selectSpacing*2
+				//	);
 				// }
 			}
 		};
@@ -88,7 +103,8 @@ public class UserInteraction extends JFrame{
 		this.setSize(sizeX,sizeY);
 		repaint();
 		setVisible(true);
-		setDefaultCloseOperation(EXIT_ON_CLOSE); //exit application when x is clicked
+		//exit application when x is clicked
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 	public void setKey(boolean state, int key){
 		if(key==87){	up=state;}
@@ -111,7 +127,13 @@ public class UserInteraction extends JFrame{
 		for (int i=0; i<tafl.mainBoard.width; i++) {
 			for (int j=0; j<tafl.mainBoard.height; j++) {
 				g.setColor(Color.white);
-				if((i==0&&j==0)||(i==0&&j==8)||(i==8&&j==0)||(i==8&&j==8)||(i==4&&j==4)){
+				if(
+					(i==0&&j==0)
+					||(i==0&&j==8)
+					||(i==8&&j==0)
+					||(i==8&&j==8)
+					||(i==4&&j==4)
+				){
 					g.setColor(Color.red);
 				}
 				g.fillRect(50+gridSpace*i,50+gridSpace*j,gridSpace,gridSpace);

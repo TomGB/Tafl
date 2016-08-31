@@ -58,7 +58,7 @@ class TextBoxController{
       blackTurnText.setVisible(false);
 		}else{
 			blackTurnText.setVisible(true);
-      blackTurnText.setVisible(false);
+      whiteTurnText.setVisible(false);
 		}
     undo.setActive(active);
 		save.setActive(active);
